@@ -8,13 +8,13 @@ namespace Online_Learning_App.Controllers
 {
     [ApiController]
     [Route("api/auth")]
-    public class AuthController : ControllerBase
+    public class AccountController : ControllerBase
     {
         private readonly IAuthService _authService;
         private readonly IUserService _userService;
         private readonly IRoleService _roleService;
 
-        public AuthController(IAuthService authService, IUserService userService, IRoleService roleService)
+        public AccountController(IAuthService authService, IUserService userService, IRoleService roleService)
         {
             _authService = authService;
             _userService = userService;
