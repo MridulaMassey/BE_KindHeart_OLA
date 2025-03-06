@@ -31,24 +31,42 @@ namespace Application.Services
             _userManager = userManager;
         }
 
-        public async Task<bool> AuthenticateUserAsync(LoginDTO loginDto)
+        //public async Task<bool> AuthenticateUserAsync(LoginDTO loginDto)
+        //{
+        //    var user = await _userRepository.GetUserByUsernameAsync(loginDto.UserName);
+        //    if (user == null) return false;
+        //    // string base64Encoded = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(loginDto.PasswordHash));
+        // //   loginDto.PasswordHash = _userManager.PasswordHasher.HashPassword(user,loginDto.PasswordHash);
+        //  //  user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, "India@123"); // Correct hashing
+        // //   await _userManager.UpdateAsync(user);
+        //    var signInResult = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+
+        //    //if (!signInResult.Succeeded)
+        //    //{
+        //    //    Console.WriteLine("Sign-in failed");
+        //    //    return signInResult; // Return early if password does not match
+        //    //}
+        //    //var result = await _signInManager.PasswordSignInAsync(user, loginDto.PasswordHash, loginDto.RememberMe, false);
+        //    return signInResult.Succeeded;
+        //}
+        public async Task<(bool IsAuthenticated, string? Role)> AuthenticateUserAsync(LoginDTO loginDto)
         {
             var user = await _userRepository.GetUserByUsernameAsync(loginDto.UserName);
-            if (user == null) return false;
-            // string base64Encoded = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(loginDto.PasswordHash));
-         //   loginDto.PasswordHash = _userManager.PasswordHasher.HashPassword(user,loginDto.PasswordHash);
-          //  user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, "India@123"); // Correct hashing
-         //   await _userManager.UpdateAsync(user);
-            var signInResult = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+            if (user == null) return (false, null);
 
-            //if (!signInResult.Succeeded)
-            //{
-            //    Console.WriteLine("Sign-in failed");
-            //    return signInResult; // Return early if password does not match
-            //}
-            //var result = await _signInManager.PasswordSignInAsync(user, loginDto.PasswordHash, loginDto.RememberMe, false);
-            return signInResult.Succeeded;
+            var signInResult = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+            if (!signInResult.Succeeded)
+            {
+                return (false, null);
+            }
+
+            // Fetch user roles (assuming one role per user)
+            var roles = await _userManager.GetRolesAsync(user);
+            string? role = roles.Count > 0 ? roles[0] : null;
+
+            return (true, role);
         }
     }
+
 
 }

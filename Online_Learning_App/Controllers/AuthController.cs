@@ -24,13 +24,13 @@ namespace Online_Learning_App.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO model)
         {
-            bool isAuthenticated = await _authService.AuthenticateUserAsync(model);
+            var (isAuthenticated, role) = await _authService.AuthenticateUserAsync(model);
             if (!isAuthenticated)
             {
-                return Unauthorized(new { message = "Invalid credentials" });
+                return Unauthorized(new { message = "Invalid credentials" ,role=role});
             }
 
-            return Ok(new { message = "Login successful" });
+            return Ok(new { message = "Login successful",Rolename= role });
         }
         [HttpPost("register")]
         public async Task<IActionResult> RegisterUser([FromBody] RegisterUserDto dto)
