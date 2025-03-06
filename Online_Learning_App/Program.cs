@@ -12,14 +12,24 @@ using Online_Learning_App.Domain.Interfaces;
 using Online_Learning_App.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure database
+//builder.Services.AddDbContext<ApplicationDbContext>(options =>
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+        b => b.MigrationsAssembly("Online_Learning_App.Infrastructure")));
+
 
 // Identity setup
-builder.Services.AddIdentity<ApplicationUser, Role>()
+builder.Services.AddIdentity<ApplicationUser, Role>(
+    options => {
+        options.ClaimsIdentity.UserIdClaimType = null;
+        options.ClaimsIdentity.RoleClaimType = null;
+    }
+    )
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
@@ -41,6 +51,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();

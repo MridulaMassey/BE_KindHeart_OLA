@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Online_Learning_App.Domain.Entities
 {
-    public class Role : IdentityRole
+    public class Role : IdentityRole<Guid>
     {
+        public ICollection<ApplicationUser> Users { get; set; }
     }
 }

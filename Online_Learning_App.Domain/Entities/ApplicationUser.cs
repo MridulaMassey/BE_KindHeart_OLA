@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Online_Learning_App.Domain.Entities
 {
-    public class ApplicationUser: IdentityUser
+    public class ApplicationUser: IdentityUser<Guid>
     {
+
+
     }
 }
