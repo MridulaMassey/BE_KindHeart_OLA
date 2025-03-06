@@ -11,6 +11,8 @@ using Online_Learning_App.Domain.Entities;
 using Online_Learning_App.Domain.Interfaces;
 using Online_Learning_App.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Online_Learning_APP.Application.Services;
+using AuthenticationApp.Application.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,6 +44,9 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 // Register services
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddHttpContextAccessor();

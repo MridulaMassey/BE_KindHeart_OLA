@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AuthenticationApp.Application.Services;
+using Microsoft.AspNetCore.Mvc;
 using Online_Learning_APP.Application.DTO;
 using Online_Learning_APP.Application.Interfaces;
+using Online_Learning_APP.Application.Services;
 
 namespace Online_Learning_App.Controllers
 {
@@ -9,10 +11,14 @@ namespace Online_Learning_App.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IUserService _userService;
+        private readonly IRoleService _roleService;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, IUserService userService, IRoleService roleService)
         {
             _authService = authService;
+            _userService = userService;
+            _roleService = roleService;
         }
 
         [HttpPost("login")]
@@ -25,6 +31,19 @@ namespace Online_Learning_App.Controllers
             }
 
             return Ok(new { message = "Login successful" });
+        }
+        [HttpPost("register")]
+        public async Task<IActionResult> RegisterUser([FromBody] RegisterUserDto dto)
+        {
+            var result = await _userService.RegisterUserAsync(dto.UserName, dto.Email, dto.Password, dto.Role);
+            return Ok(new { message = result });
+        }
+
+        [HttpPost("create-role")]
+        public async Task<IActionResult> CreateRole([FromBody] CreateRoleDto dto)
+        {
+            var result = await _roleService.CreateRoleAsync(dto.RoleName);
+            return Ok(new { message = result });
         }
     }
 }

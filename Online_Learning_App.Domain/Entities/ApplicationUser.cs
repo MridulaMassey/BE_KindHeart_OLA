@@ -10,6 +10,6 @@ namespace Online_Learning_App.Domain.Entities
     public class ApplicationUser: IdentityUser<Guid>
     {
 
-
+        public Guid? RoleId { get; set; }
     }
 }
