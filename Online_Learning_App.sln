@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Online_Learning_App", "Online_Learning_App\Online_Learning_App.csproj", "{16A1B4D0-99E9-4D86-8D83-6CEB45B666CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Online_Learning_App_Presentation", "Online_Learning_App\Online_Learning_App_Presentation.csproj", "{16A1B4D0-99E9-4D86-8D83-6CEB45B666CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Online_Learning_App.Domain", "Online_Learning_App.Domain\Online_Learning_App.Domain.csproj", "{C9D5FF2D-AEC5-4D80-8E29-4879EAFC7A3B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Online_Learning_App.Domain", "Online_Learning_App.Domain\Online_Learning_App.Domain.csproj", "{C9D5FF2D-AEC5-4D80-8E29-4879EAFC7A3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Online_Learning_App.Infrastructure", "Online_Learning_App.Infrastructure\Online_Learning_App.Infrastructure.csproj", "{B3577731-85CD-4B4E-BFB6-C29293F27C47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Online_Learning_App.Infrastructure", "Online_Learning_App.Infrastructure\Online_Learning_App.Infrastructure.csproj", "{B3577731-85CD-4B4E-BFB6-C29293F27C47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Online_Learning_APP.Application", "Online_Learning_APP.Application\Online_Learning_APP.Application.csproj", "{DC8FE923-6E37-4FAA-B3BF-9ACC17A80A5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Online_Learning_APP.Application", "Online_Learning_APP.Application\Online_Learning_APP.Application.csproj", "{DC8FE923-6E37-4FAA-B3BF-9ACC17A80A5F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
