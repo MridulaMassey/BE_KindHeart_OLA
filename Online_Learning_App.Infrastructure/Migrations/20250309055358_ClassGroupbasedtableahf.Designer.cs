@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Online_Learning_App.Infrastructure;
 
@@ -11,9 +12,11 @@ using Online_Learning_App.Infrastructure;
 namespace Online_Learning_App.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250309055358_ClassGroupbasedtableahf")]
+    partial class ClassGroupbasedtableahf
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -347,14 +350,7 @@ namespace Online_Learning_App.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasIndex("ClassGroupId");
-
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("Students", (string)null);
                 });
@@ -492,15 +488,7 @@ namespace Online_Learning_App.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Online_Learning_App.Domain.Entities.ApplicationUser", "User")
-                        .WithOne("Student")
-                        .HasForeignKey("Online_Learning_App.Domain.Entities.Student", "UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("ClassGroup");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.Teacher", b =>
@@ -515,12 +503,6 @@ namespace Online_Learning_App.Infrastructure.Migrations
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.Activity", b =>
                 {
                     b.Navigation("Submissions");
-                });
-
-            modelBuilder.Entity("Online_Learning_App.Domain.Entities.ApplicationUser", b =>
-                {
-                    b.Navigation("Student")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.ClassGroup", b =>

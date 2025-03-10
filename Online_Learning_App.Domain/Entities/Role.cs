@@ -9,6 +9,7 @@ namespace Online_Learning_App.Domain.Entities
 {
     public class Role : IdentityRole<Guid>
     {
-        public ICollection<ApplicationUser> Users { get; set; }
+        public ICollection<ApplicationUser> Users { get; set; } = new List<ApplicationUser>();
+      //  public ICollection<ApplicationUser> Users { get; set; }
     }
 }

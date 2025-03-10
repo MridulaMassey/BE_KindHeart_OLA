@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Online_Learning_App.Infrastructure;
 
@@ -11,9 +12,11 @@ using Online_Learning_App.Infrastructure;
 namespace Online_Learning_App.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250309035850_TeacherStudenttable")]
+    partial class TeacherStudenttable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -127,18 +130,8 @@ namespace Online_Learning_App.Infrastructure.Migrations
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.Activity", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("ActivityId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ActivityName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("ClassGroupId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ClassLevel")
@@ -159,17 +152,20 @@ namespace Online_Learning_App.Infrastructure.Migrations
                     b.Property<Guid>("TeacherId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("TeacherId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClassGroupId");
+                    b.HasKey("ActivityId");
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("Activities", (string)null);
+                    b.HasIndex("TeacherId1");
+
+                    b.ToTable("Activities");
                 });
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.ApplicationUser", b =>
@@ -218,9 +214,6 @@ namespace Online_Learning_App.Infrastructure.Migrations
                     b.Property<Guid?>("RoleId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("RoleId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -243,31 +236,9 @@ namespace Online_Learning_App.Infrastructure.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.HasIndex("RoleId1");
-
                     b.ToTable("Users", (string)null);
 
                     b.UseTptMappingStrategy();
-                });
-
-            modelBuilder.Entity("Online_Learning_App.Domain.Entities.ClassGroup", b =>
-                {
-                    b.Property<Guid>("ClassGroupId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ClassName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("TeacherId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("ClassGroupId");
-
-                    b.HasIndex("TeacherId");
-
-                    b.ToTable("ClassGroups", (string)null);
                 });
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.Role", b =>
@@ -324,6 +295,9 @@ namespace Online_Learning_App.Infrastructure.Migrations
                     b.Property<Guid>("StudentId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("StudentId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("SubmissionDate")
                         .HasColumnType("datetime2");
 
@@ -333,28 +307,18 @@ namespace Online_Learning_App.Infrastructure.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("Submissions", (string)null);
+                    b.HasIndex("StudentId1");
+
+                    b.ToTable("Submissions");
                 });
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.Student", b =>
                 {
                     b.HasBaseType("Online_Learning_App.Domain.Entities.ApplicationUser");
 
-                    b.Property<Guid?>("ClassGroupId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("ClassLevel")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasIndex("ClassGroupId");
-
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("Students", (string)null);
                 });
@@ -419,18 +383,15 @@ namespace Online_Learning_App.Infrastructure.Migrations
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.Activity", b =>
                 {
-                    b.HasOne("Online_Learning_App.Domain.Entities.ClassGroup", "ClassGroup")
-                        .WithMany("Activities")
-                        .HasForeignKey("ClassGroupId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.HasOne("Online_Learning_App.Domain.Entities.Teacher", "Teacher")
                         .WithMany()
                         .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("ClassGroup");
+                    b.HasOne("Online_Learning_App.Domain.Entities.Teacher", null)
+                        .WithMany("Activities")
+                        .HasForeignKey("TeacherId1");
 
                     b.Navigation("Teacher");
                 });
@@ -438,26 +399,10 @@ namespace Online_Learning_App.Infrastructure.Migrations
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.ApplicationUser", b =>
                 {
                     b.HasOne("Online_Learning_App.Domain.Entities.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("Online_Learning_App.Domain.Entities.Role", null)
                         .WithMany("Users")
-                        .HasForeignKey("RoleId1");
+                        .HasForeignKey("RoleId");
 
                     b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("Online_Learning_App.Domain.Entities.ClassGroup", b =>
-                {
-                    b.HasOne("Online_Learning_App.Domain.Entities.Teacher", "Teacher")
-                        .WithMany("ClassGroups")
-                        .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.Submission", b =>
@@ -469,10 +414,14 @@ namespace Online_Learning_App.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Online_Learning_App.Domain.Entities.Student", "Student")
-                        .WithMany("Submissions")
+                        .WithMany()
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("Online_Learning_App.Domain.Entities.Student", null)
+                        .WithMany("Submissions")
+                        .HasForeignKey("StudentId1");
 
                     b.Navigation("Activity");
 
@@ -481,26 +430,11 @@ namespace Online_Learning_App.Infrastructure.Migrations
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.Student", b =>
                 {
-                    b.HasOne("Online_Learning_App.Domain.Entities.ClassGroup", "ClassGroup")
-                        .WithMany("Students")
-                        .HasForeignKey("ClassGroupId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.HasOne("Online_Learning_App.Domain.Entities.ApplicationUser", null)
                         .WithOne()
                         .HasForeignKey("Online_Learning_App.Domain.Entities.Student", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Online_Learning_App.Domain.Entities.ApplicationUser", "User")
-                        .WithOne("Student")
-                        .HasForeignKey("Online_Learning_App.Domain.Entities.Student", "UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ClassGroup");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.Teacher", b =>
@@ -517,19 +451,6 @@ namespace Online_Learning_App.Infrastructure.Migrations
                     b.Navigation("Submissions");
                 });
 
-            modelBuilder.Entity("Online_Learning_App.Domain.Entities.ApplicationUser", b =>
-                {
-                    b.Navigation("Student")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Online_Learning_App.Domain.Entities.ClassGroup", b =>
-                {
-                    b.Navigation("Activities");
-
-                    b.Navigation("Students");
-                });
-
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.Role", b =>
                 {
                     b.Navigation("Users");
@@ -542,7 +463,7 @@ namespace Online_Learning_App.Infrastructure.Migrations
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.Teacher", b =>
                 {
-                    b.Navigation("ClassGroups");
+                    b.Navigation("Activities");
                 });
 #pragma warning restore 612, 618
         }
