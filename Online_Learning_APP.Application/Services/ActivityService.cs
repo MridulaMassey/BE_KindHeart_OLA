@@ -33,5 +33,49 @@ namespace Online_Learning_App.Application.Services
             await _activityRepository.AddAsync(activity);
             return _mapper.Map<ActivityDto>(activity);
         }
+
+        public async Task<ActivityDto> GetActivityByIdAsync(Guid activityId)
+        {
+            var activity = await _activityRepository.GetByIdAsync(activityId);
+            return activity == null ? null : _mapper.Map<ActivityDto>(activity);
+        }
+
+        // ✅ Read All Activities
+        public async Task<IEnumerable<ActivityDto>> GetAllActivitiesAsync()
+        {
+            var activities = await _activityRepository.GetAllAsync();
+            return _mapper.Map<IEnumerable<ActivityDto>>(activities);
+        }
+
+        // ✅ Update Activity
+        public async Task<ActivityDto> UpdateActivityAsync(Guid activityId, UpdateActivityDto updateActivityDto)
+        {
+            var activity = await _activityRepository.GetByIdAsync(activityId);
+            if (activity == null)
+            {
+                return null;
+            }
+
+            // Update properties
+            activity.ActivityName = updateActivityDto.ActivityName ?? activity.ActivityName;
+            activity.Description = updateActivityDto.Description ?? activity.Description;
+
+            await _activityRepository.UpdateAsync(activity);
+            return _mapper.Map<ActivityDto>(activity);
+        }
+
+        // ✅ Delete Activity
+        public async Task<bool> DeleteActivityAsync(Guid activityId)
+        {
+            var activity = await _activityRepository.GetByIdAsync(activityId);
+            if (activity == null)
+            {
+                return false;
+            }
+
+            await _activityRepository.DeleteAsync(activity.Id);
+            return true;
+        }
+
     }
 }
