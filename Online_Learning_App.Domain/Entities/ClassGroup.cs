@@ -14,7 +14,7 @@ namespace Online_Learning_App.Domain.Entities
         public string ClassName { get; set; } // Example: "Year 4 - Section A"
 
         // Foreign Key to Teacher
-        public Guid TeacherId { get; set; }
+        public Guid? TeacherId { get; set; } = null;
         public Teacher Teacher { get; set; }
 
         // Students in the class

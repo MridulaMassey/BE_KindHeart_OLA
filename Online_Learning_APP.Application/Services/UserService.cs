@@ -82,7 +82,7 @@ namespace AuthenticationApp.Application.Services
 
                 }
             }
-            else if (role.Name == "TEACHER")
+            else if (role.Name == "Teacher")
             {
                 // Check if the teacher already exists
                 var existingTeacher = await _context.Teachers
@@ -92,9 +92,10 @@ namespace AuthenticationApp.Application.Services
                 {
                     var teacher = new Teacher
                     {
-                        Id = user.Id,  // This links the Teacher to the ApplicationUser
+                        Id = new Guid(),  // This links the Teacher to the ApplicationUser
                         Email = user.Email,
-                        UserName = user.UserName
+                        UserName = user.UserName,
+                        UserId = user.Id
                     };
                     _context.Teachers.Add(teacher);  // Add to the Teachers table
                 }

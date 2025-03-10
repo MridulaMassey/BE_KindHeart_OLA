@@ -3,6 +3,9 @@ using Application.Services;
 //using Domain.Interfaces;
 //using Infrastructure.Data;
 //using Infrastructure.Repositories;
+using AutoMapper;
+
+
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +16,11 @@ using Online_Learning_App.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Online_Learning_APP.Application.Services;
 using AuthenticationApp.Application.Services;
+using Online_Learning_App.Infrastructure.Repository;
+using Online_Learning_App.Application.Services;
+using Online_Learning_APP.Application.DTO;
+using AutoMapper; // Add thi
+using System.Reflection; // Add this line
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,13 +50,24 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.HttpOnly = true;
     options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
 });
+var mapperConfig = new MapperConfiguration(cfg =>
+{
+    cfg.AddProfile<MappingProfile>();
+});
+
+IMapper mapper = mapperConfig.CreateMapper();
+builder.Services.AddSingleton(mapper);
+
 
 // Register services
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IActivityRepository, ActivityRepository>();
+builder.Services.AddScoped<IActivityService, ActivityService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllers();
