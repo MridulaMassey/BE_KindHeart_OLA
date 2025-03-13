@@ -20,7 +20,9 @@ using Online_Learning_App.Infrastructure.Repository;
 using Online_Learning_App.Application.Services;
 using Online_Learning_APP.Application.DTO;
 using AutoMapper; // Add thi
-using System.Reflection; // Add this line
+using System.Reflection;
+using Online_Learning_App.Infrastructure.Service; // Add this line
+using Online_Learning_App.Domain.Interfaces;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -81,6 +83,11 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+// Add services
+builder.Services.AddSingleton<IGoogleDriveService, GoogleDriveService>();
+builder.Services.AddTransient<FileUploadService>();
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
