@@ -33,7 +33,8 @@ namespace AuthenticationApp.Application.Services
             var user = new ApplicationUser
             {
                 UserName = username,
-                Email = email
+                Email = email,
+                RoleId= role.Id,
             };
 
             // Create the user with hashed password
@@ -100,12 +101,12 @@ namespace AuthenticationApp.Application.Services
                     _context.Teachers.Add(teacher);  // Add to the Teachers table
                 }
             }
-            user.RoleId = role.Id;  // Ensure your ApplicationUser entity has a RoleId property
+              // Ensure your ApplicationUser entity has a RoleId property
             user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, password); // Correct hashing
 
-           // await _userManager.UpdateAsync(user);
+          //  await _userManager.UpdateAsync(user);
             // Save all changes to the database
-           await _context.SaveChangesAsync();
+           //await _context.SaveChangesAsync();
 
             return "User registered successfully!";
         }
