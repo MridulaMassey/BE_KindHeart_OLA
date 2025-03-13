@@ -20,7 +20,7 @@ namespace AuthenticationApp.Application.Services
             _context = context;
         }
 
-        public async Task<string> RegisterUserAsync(string username, string email, string password, string roleName)
+        public async Task<string> RegisterUserAsync(string username, string email, string password, string roleName,string firstName, string lastName)
         {
             // Check if the role exists
             var role = await _roleManager.FindByNameAsync(roleName);
@@ -35,6 +35,8 @@ namespace AuthenticationApp.Application.Services
                 UserName = username,
                 Email = email,
                 RoleId= role.Id,
+                FirstName=firstName,
+                LastName=lastName,
             };
 
             // Create the user with hashed password

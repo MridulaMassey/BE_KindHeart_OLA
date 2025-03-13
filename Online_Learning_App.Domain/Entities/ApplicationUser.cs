@@ -12,8 +12,9 @@ namespace Online_Learning_App.Domain.Entities
     {
         public virtual Role Role { get; set; }
         public Guid? RoleId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
 
-     
         public virtual  Student Student { get; set; }
     }
 }

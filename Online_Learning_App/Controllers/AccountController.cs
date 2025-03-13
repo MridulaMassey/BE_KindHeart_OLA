@@ -35,7 +35,7 @@ namespace Online_Learning_App.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> RegisterUser([FromBody] RegisterUserDto dto)
         {
-            var result = await _userService.RegisterUserAsync(dto.UserName, dto.Email, dto.Password, dto.Role);
+            var result = await _userService.RegisterUserAsync(dto.UserName, dto.Email, dto.Password, dto.Role,dto.FirstName,dto.LastName);
             return Ok(new { message = result });
         }
 
