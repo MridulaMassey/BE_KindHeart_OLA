@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Online_Learning_App.Domain.Entities;
+using Online_Learning_App.Domain.Interfaces;
 using Online_Learning_App.Infrastructure;
 using Online_Learning_APP.Application.Interfaces;
 using System.Threading.Tasks;
@@ -12,12 +13,14 @@ namespace AuthenticationApp.Application.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<Role> _roleManager;
         private readonly ApplicationDbContext _context;
+        private readonly IUserRepository _userRepository;
 
-        public UserService(UserManager<ApplicationUser> userManager, RoleManager<Role> roleManager, ApplicationDbContext context)
+        public UserService(UserManager<ApplicationUser> userManager, RoleManager<Role> roleManager, ApplicationDbContext context, IUserRepository userRepository)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _context = context;
+            _userRepository = userRepository;
         }
 
         public async Task<string> RegisterUserAsync(string username, string email, string password, string roleName,string firstName, string lastName)
@@ -113,6 +116,10 @@ namespace AuthenticationApp.Application.Services
             return "User registered successfully!";
         }
 
+        public async Task<ApplicationUser> GetProfileAsync(string username)
+        {
+            return await _userRepository.GetUserByUsernameAsync(username);
+        }
 
     }
 }
