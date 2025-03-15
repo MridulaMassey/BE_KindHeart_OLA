@@ -7,8 +7,14 @@ using System.Threading.Tasks;
 
 namespace Online_Learning_App.Domain.Entities
 {
-    public class Student : ApplicationUser
+    public class Student 
     {
+        public Guid Id { get; set; }
+     
+        public string? Email { get; set; } = null;
+        public string? UserName { get; set; } = null;
+        public virtual Role Role { get; set; }
+        public Guid? RoleId { get; set; }
         public Guid? ClassGroupId { get; set; } // Allow NULL if student is not assigned to a class
         public ClassGroup? ClassGroup
         {

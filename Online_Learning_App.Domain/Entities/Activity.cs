@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,7 +21,8 @@ namespace Online_Learning_App.Domain.Entities
 
         // Define the foreign key for Teacher to Activity
         public Guid TeacherId { get; set; }
-        public Teacher Teacher { get; set; }
+    
+        public virtual Teacher Teacher { get; set; }
         //public Guid ClassGroupId { get; set; }
         //public ClassGroup? ClassGroup { get; set; }
         //// Create the relationship with Submission

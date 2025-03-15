@@ -89,11 +89,17 @@ namespace Online_Learning_App.Infrastructure
                 .WithOne(u => u.Student)
                 .HasForeignKey<Student>(s => s.UserId)
                 .OnDelete(DeleteBehavior.Restrict); // Adjust as needed
+       
+            // Teacher - User Relationship
             modelBuilder.Entity<Teacher>()
-             .HasOne(t => t.User)
-             .WithOne() // One-to-one relationship
-             .HasForeignKey<Teacher>(t => t.UserId)
-             .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(t => t.User)
+                .WithOne() // One-to-one relationship
+                .HasForeignKey<Teacher>(t => t.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // ApplicationUser - Teacher Relationship (Explicit Configuration)
+    
+
 
         }
 

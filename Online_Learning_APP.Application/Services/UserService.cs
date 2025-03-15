@@ -61,8 +61,10 @@ namespace AuthenticationApp.Application.Services
             //    UserId=user.Id
             //};
             //_context.Students.Attach(students);
-     //       await _context.SaveChangesAsync();
-           // Check if the user already exists as a Student or Teacher
+            //       await _context.SaveChangesAsync();
+            // Check if the user already exists as a Student or Teacher
+            // **Detach the user to prevent EF tracking issues**
+            _context.Entry(user).State = EntityState.Detached;
             if (role.Name == "Student")
             {
                 // Check if the student already exists
@@ -83,7 +85,7 @@ namespace AuthenticationApp.Application.Services
                         //UserId=user.Id
 
                     };
-                    //   _context.Entry(existingStudent).State = EntityState.Detached;
+             
                     _context.Students.Add(student);  // Add to the Students table
 
                 }
@@ -111,7 +113,7 @@ namespace AuthenticationApp.Application.Services
 
           //  await _userManager.UpdateAsync(user);
             // Save all changes to the database
-           //await _context.SaveChangesAsync();
+           await _context.SaveChangesAsync();
 
             return "User registered successfully!";
         }

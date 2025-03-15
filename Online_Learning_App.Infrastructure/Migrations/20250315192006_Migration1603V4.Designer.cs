@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Online_Learning_App.Infrastructure;
 
@@ -11,9 +12,11 @@ using Online_Learning_App.Infrastructure;
 namespace Online_Learning_App.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250315192006_Migration1603V4")]
+    partial class Migration1603V4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -224,6 +227,9 @@ namespace Online_Learning_App.Infrastructure.Migrations
                     b.Property<Guid?>("RoleId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("RoleId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -246,7 +252,11 @@ namespace Online_Learning_App.Infrastructure.Migrations
 
                     b.HasIndex("RoleId");
 
+                    b.HasIndex("RoleId1");
+
                     b.ToTable("Users", (string)null);
+
+                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.ClassGroup", b =>
@@ -374,28 +384,14 @@ namespace Online_Learning_App.Infrastructure.Migrations
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.Teacher", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("RoleId")
-                        .HasColumnType("uniqueidentifier");
+                    b.HasBaseType("Online_Learning_App.Domain.Entities.ApplicationUser");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
                     b.HasIndex("UserId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("Teachers", (string)null);
                 });
@@ -472,8 +468,13 @@ namespace Online_Learning_App.Infrastructure.Migrations
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.ApplicationUser", b =>
                 {
                     b.HasOne("Online_Learning_App.Domain.Entities.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Online_Learning_App.Domain.Entities.Role", null)
                         .WithMany("Users")
-                        .HasForeignKey("RoleId");
+                        .HasForeignKey("RoleId1");
 
                     b.Navigation("Role");
                 });
@@ -534,18 +535,17 @@ namespace Online_Learning_App.Infrastructure.Migrations
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.Teacher", b =>
                 {
-                    b.HasOne("Online_Learning_App.Domain.Entities.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                    b.HasOne("Online_Learning_App.Domain.Entities.ApplicationUser", null)
+                        .WithOne()
+                        .HasForeignKey("Online_Learning_App.Domain.Entities.Teacher", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Online_Learning_App.Domain.Entities.ApplicationUser", "User")
                         .WithOne()
                         .HasForeignKey("Online_Learning_App.Domain.Entities.Teacher", "UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Role");
 
                     b.Navigation("User");
                 });
