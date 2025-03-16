@@ -18,7 +18,7 @@ namespace Online_Learning_App_Presentation.Controllers
             _activityService = activityService;
         }
 
-      
+
         [HttpPost]
         public async Task<ActionResult<ActivityDto>> CreateActivity([FromBody] CreateActivityDto createActivityDto)
         {
@@ -37,7 +37,7 @@ namespace Online_Learning_App_Presentation.Controllers
             return Ok(activityDto);
         }
 
-        [HttpGet]
+        [HttpGet("activitieslist")]
         public async Task<ActionResult<IEnumerable<ActivityDto>>> GetAllActivities()
         {
             var activities = await _activityService.GetAllActivitiesAsync();
