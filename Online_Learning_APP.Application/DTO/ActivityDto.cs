@@ -9,6 +9,10 @@ namespace Online_Learning_APP.Application.DTO
     public class ActivityDto
     {
         public Guid ActivityId { get; set; }
+
+        /// <summary>
+        /// dto
+        /// </summary>
         public string Title { get; set; }
         public string Description { get; set; }
         public string PdfUrl { get; set; }
