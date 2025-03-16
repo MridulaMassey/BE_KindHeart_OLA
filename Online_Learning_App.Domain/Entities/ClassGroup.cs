@@ -22,5 +22,8 @@ namespace Online_Learning_App.Domain.Entities
 
         // Activities assigned to this class
         public ICollection<Activity> Activities { get; set; } = new List<Activity>();
+
+        // Many-to-Many Relationship with Subjects
+        public ICollection<ClassGroupSubject> ClassGroupSubjects { get; set; } = new List<ClassGroupSubject>();
     }
 }
