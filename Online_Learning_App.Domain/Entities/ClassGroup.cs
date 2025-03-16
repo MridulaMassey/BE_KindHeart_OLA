@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Online_Learning_App.Domain.Entities
@@ -14,8 +15,9 @@ namespace Online_Learning_App.Domain.Entities
         public string ClassName { get; set; } // Example: "Year 4 - Section A"
 
         // Foreign Key to Teacher
-        public Guid? TeacherId { get; set; } = null;
-        public Teacher Teacher { get; set; }
+        public Guid? AdminId { get; set; } = null;
+        [JsonIgnore]
+        public virtual Admin Admin { get; set; }
 
         // Students in the class
         public ICollection<Student> Students { get; set; } = new List<Student>();

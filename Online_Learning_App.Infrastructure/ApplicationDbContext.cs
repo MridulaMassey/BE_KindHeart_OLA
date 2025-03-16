@@ -15,6 +15,12 @@ namespace Online_Learning_App.Infrastructure
         public DbSet<Activity> Activities { get; set; }
         public DbSet<Submission> Submissions { get; set; }
         public DbSet<ClassGroup> ClassGroups { get; set; } // **Newly Added**
+        public DbSet<Subject> Subjects { get; set; }
+        public DbSet<Admin> Admin { get; set; }
+        public DbSet<ClassGroupSubject> ClassGroupSubjectsInformation
+        {
+            get; set;
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -38,7 +44,7 @@ namespace Online_Learning_App.Infrastructure
             modelBuilder.Entity<Submission>().ToTable("Submissions");
 
             // Define the relationships
-        
+
             // **Allow NULL for ClassGroupId in Activity**
             modelBuilder.Entity<Activity>()
                 .HasOne(a => a.ClassGroup)
@@ -46,11 +52,17 @@ namespace Online_Learning_App.Infrastructure
                 .HasForeignKey(a => a.ClassGroupId)
                 .OnDelete(DeleteBehavior.SetNull);
 
-            // **ClassGroup - Teacher Relationship**
+            //// **ClassGroup - Teacher Relationship**
+            //modelBuilder.Entity<ClassGroup>()
+            //    .HasOne(cg => cg.Teacher)
+            //    .WithMany(t => t.ClassGroups)
+            //    .HasForeignKey(cg => cg.TeacherId)
+            //    .OnDelete(DeleteBehavior.NoAction);
+            // **ClassGroup - Admin Relationship**
             modelBuilder.Entity<ClassGroup>()
-                .HasOne(cg => cg.Teacher)
+                .HasOne(cg => cg.Admin)
                 .WithMany(t => t.ClassGroups)
-                .HasForeignKey(cg => cg.TeacherId)
+                .HasForeignKey(cg => cg.AdminId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             // **Student - ClassGroup Relationship (Allow NULL)**
@@ -89,7 +101,7 @@ namespace Online_Learning_App.Infrastructure
                 .WithOne(u => u.Student)
                 .HasForeignKey<Student>(s => s.UserId)
                 .OnDelete(DeleteBehavior.Restrict); // Adjust as needed
-       
+
             // Teacher - User Relationship
             modelBuilder.Entity<Teacher>()
                 .HasOne(t => t.User)
@@ -98,7 +110,7 @@ namespace Online_Learning_App.Infrastructure
                 .OnDelete(DeleteBehavior.Restrict);
 
             // ApplicationUser - Teacher Relationship (Explicit Configuration)
-    
+
 
 
         }

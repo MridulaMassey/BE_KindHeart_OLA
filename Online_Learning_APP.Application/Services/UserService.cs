@@ -90,6 +90,24 @@ namespace AuthenticationApp.Application.Services
 
                 }
             }
+            else if (role.Name == "Admin")
+            {
+                // Check if the teacher already exists
+                var existingTeacher = await _context.Teachers
+                    .FirstOrDefaultAsync(t => t.Id == user.Id);
+
+                if (existingTeacher == null)  // Only add if the teacher doesn't already exist
+                {
+                    var admin = new Admin
+                    {
+                        AdminId = new Guid(),  // This links the Teacher to the ApplicationUser
+                        Email = user.Email,
+                        UserName = user.UserName,
+                        UserId = user.Id
+                    };
+                    _context.Admin.Add(admin);  // Add to the Teachers table
+                }
+            }
             else if (role.Name == "Teacher")
             {
                 // Check if the teacher already exists
