@@ -23,7 +23,7 @@ namespace AuthenticationApp.Application.Services
             _userRepository = userRepository;
         }
 
-        public async Task<string> RegisterUserAsync(string username, string email, string password, string roleName,string firstName, string lastName)
+        public async Task<string> RegisterUserAsync(string username, string email, string password, string roleName,string firstName, string lastName,Guid? ClassgroupID)
         {
             // Check if the role exists
             var role = await _roleManager.FindByNameAsync(roleName);
@@ -81,7 +81,8 @@ namespace AuthenticationApp.Application.Services
                         Email = user.Email,
                         UserName = user.UserName,
                         ClassLevel = "One",
-                        UserId = user.Id
+                        UserId = user.Id,
+                        ClassGroupId= ClassgroupID
                         //UserId=user.Id
 
                     };

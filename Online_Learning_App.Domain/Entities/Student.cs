@@ -16,7 +16,7 @@ namespace Online_Learning_App.Domain.Entities
         public virtual Role Role { get; set; }
         public Guid? RoleId { get; set; }
         public Guid? ClassGroupId { get; set; } // Allow NULL if student is not assigned to a class
-        public ClassGroup? ClassGroup
+        public virtual ClassGroup? ClassGroup
         {
             get; set;
         }

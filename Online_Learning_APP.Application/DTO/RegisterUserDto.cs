@@ -14,6 +14,7 @@ namespace Online_Learning_APP.Application.DTO
         public string Role { get; set; }
 
         public string FirstName { get; set; }
+        public Guid? ClassGroupId { get; set; }
         public string LastName { get; set; }
     }
 }

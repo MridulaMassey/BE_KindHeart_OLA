@@ -35,6 +35,18 @@ namespace Online_Learning_App_Presentation.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAllClassGroups()
+        {
+            var classGroups = await _classGroupService.GetAllClassGroupsAsync();
+
+            if (classGroups == null || !classGroups.Any())
+                return NotFound();
+
+            return Ok(classGroups);
+        }
+
+
         /*    [httpget("{id}")*/
         //]
         //public async task<iactionresult> getclassgroup(guid id)

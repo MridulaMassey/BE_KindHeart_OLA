@@ -11,5 +11,6 @@ namespace Online_Learning_APP.Application.Interfaces
     public interface IClassGroupService
     {
         Task<ClassGroup> CreateClassGroupAsync(ClassGroupCreateDto classGroupDto);
+        Task<List<ClassGroup>> GetAllClassGroupsAsync();
     }
 }

@@ -9,7 +9,7 @@ namespace Online_Learning_APP.Application.Interfaces
 {
     public interface IUserService
     {
-        Task<string> RegisterUserAsync(string username, string email, string password, string roleName,string firstName,string lastName);
+        Task<string> RegisterUserAsync(string username, string email, string password, string roleName,string firstName,string lastName,Guid? classgroupId);
         Task<ApplicationUser> GetProfileAsync(string username);
 
 

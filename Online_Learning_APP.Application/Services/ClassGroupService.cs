@@ -57,5 +57,9 @@ namespace Online_Learning_APP.Application.Services
 
             return classGroup;
         }
+        public async Task<List<ClassGroup>> GetAllClassGroupsAsync()
+        {
+            return await _context.ClassGroups.ToListAsync();
+        }
     }
 }
