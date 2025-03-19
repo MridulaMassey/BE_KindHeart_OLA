@@ -9,6 +9,10 @@ namespace Online_Learning_App.Domain.Interfaces
 {
     public interface ISubjectRepository
     {
+        Task<Subject> GetSubjectByIdAsync(Guid id);
+        Task<IEnumerable<Subject>> GetAllAsync();
         Task AddAsync(Subject subject);
+        Task UpdateAsync(Subject activity);
+        Task DeleteAsync(Guid id);
     }
 }

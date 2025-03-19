@@ -24,67 +24,59 @@ namespace Online_Learning_APP.Application.Services
             _mapper = mapper;
         }
 
-        //public async Task<IEnumerable<SubjectDto>> GetAllSubjectsAsync()
-        //{
-        //    var subjects = await _subjectRepository.GetAllAsync();
-        //    return subjects.Select(s => new SubjectDto
-        //    {
-        //        SubjectId = s.SubjectId,
-        //        SubjectName = s.SubjectName
-        //    }).ToList();
-        //}
-
-        //public async Task<SubjectDto> GetSubjectByIdAsync(Guid subjectId)
-        //{
-        //    var subject = await _subjectRepository.GetByIdAsync(subjectId);
-        //    if (subject == null)
-        //        return null;
-
-        //    return new SubjectDto
-        //    {
-        //        SubjectId = subject.SubjectId,
-        //        SubjectName = subject.SubjectName
-        //    };
-        //}
-
-        //var activity = _mapper.Map<Activity>(createActivityDto);
-        //activity.ActivityId = Guid.NewGuid(); // Generate a new ID
-        //    activity.Id = activity.ActivityId; //If Id is needed.
-        //    activity.ActivityName=activity.ActivityName;
-        //  //  activity.Validate(); // Domain validation
-
-        //    await _activityRepository.AddAsync(activity);
-        //    return _mapper.Map<ActivityDto>(activity);
 
         public async Task<Guid> CreateSubjectAsync(SubjectDto subjectDto)
         {
             var subject = _mapper.Map<Subject>(subjectDto);
             subject.SubjectId = Guid.NewGuid(); // Generate a new ID
 
-            //var subject = new Subject
-            //{
-            //    SubjectId = Guid.NewGuid(),
-            //    SubjectName = subjectDto.SubjectName
-            //};
+
 
             await _subjectRepository.AddAsync(subject);
-           // return _mapper.Map<SubjectDto>(subject);
+            // return _mapper.Map<SubjectDto>(subject);
             return subject.SubjectId;
         }
+        public async Task<SubjectDto> GetSubjectByIdAsync(Guid subjectId)
+        {
+            var subject = await _subjectRepository.GetSubjectByIdAsync(subjectId);
+            if (subject == null)
+                return null;
+            return subject == null ? null : _mapper.Map<SubjectDto>(subject);
+          
+        }
+        public async Task<IEnumerable<SubjectDto>> GetAllSubjectsAsync()
+        {
+            var subject = await _subjectRepository.GetAllAsync();
+            return _mapper.Map<IEnumerable<SubjectDto>>(subject);
+        }
 
-        //public async Task UpdateSubjectAsync(SubjectDto subjectDto)
-        //{
-        //    var subject = await _subjectRepository.GetByIdAsync(subjectDto.SubjectId);
-        //    if (subject == null)
-        //        throw new Exception("Subject not found");
+        public async Task<SubjectDto> UpdateSubjectAsync(Guid activityId, UpdateSubjectDto updateSubjectDto)
+        {
+            var subject = await _subjectRepository.GetSubjectByIdAsync(activityId);
+            if (subject == null)
+            {
+                return null;
+            }
 
-        //    subject.SubjectName = subjectDto.SubjectName;
-        //    await _subjectRepository.UpdateAsync(subject);
-        //}
+            // Update properties
+            subject.SubjectName = updateSubjectDto.SubjectName ?? subject.SubjectName;
+            //activity.Description = updateSubjectDto.Description ?? activity.Description;
 
-        //public async Task DeleteSubjectAsync(Guid subjectId)
-        //{
-        //    await _subjectRepository.DeleteAsync(subjectId);
-        //}
+            await _subjectRepository.UpdateAsync(subject);
+            return _mapper.Map<SubjectDto>(subject);
+        }
+
+        public async Task<bool> DeleteSubjectAsync(Guid subjectId)
+        {
+            var subject = await _subjectRepository.GetSubjectByIdAsync(subjectId);
+            if (subject == null)
+            {
+                return false;
+            }
+
+       
+            await _subjectRepository.DeleteAsync(subjectId);
+            return true;
+        }
     }
 }
