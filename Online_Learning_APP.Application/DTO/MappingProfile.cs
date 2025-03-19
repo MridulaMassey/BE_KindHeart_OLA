@@ -18,7 +18,8 @@ namespace Online_Learning_APP.Application.DTO
 
             CreateMap<CreateActivityDto, Activity>();
 
-            CreateMap<Activity, ActivityDto>();
+            CreateMap<Activity, ActivityDto>().ReverseMap();
+            CreateMap<Subject, SubjectDto>().ReverseMap();
 
             // Add other mappings as needed
 
