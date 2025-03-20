@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,7 +19,7 @@ namespace Online_Learning_App.Domain.Entities
         public string PdfUrl { get; set; }
         public DateTime DueDate { get; set; }
         public string ClassLevel { get; set; }
-
+        public double WeightagePercent { get; set; } // Weightage per activity
         // Define the foreign key for Teacher to Activity
         public Guid TeacherId { get; set; }
     
@@ -35,5 +36,11 @@ namespace Online_Learning_App.Domain.Entities
         public Guid? ClassGroupId { get; set; }
 
         public ClassGroup ClassGroup { get; set; }
+
+        [ForeignKey("Subject")]
+        public Guid SubjectId { get; set; }
+        public virtual Subject Subject { get; set; }
+
+      
     }
 }

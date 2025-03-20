@@ -49,5 +49,11 @@ namespace Online_Learning_App.Infrastructure.Repository
                 await _dbContext.SaveChangesAsync();
             }
         }
+        public async Task<IEnumerable<Activity>> GetBySubjectAndClassAsync(Guid subjectId, Guid classId)
+        {
+            return await _dbContext.Activities
+                .Where(a => a.SubjectId == subjectId && a.ClassGroupId == classId)
+                .ToListAsync();
+        }
     }
 }

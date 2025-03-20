@@ -111,7 +111,11 @@ namespace Online_Learning_App.Infrastructure
 
             // ApplicationUser - Teacher Relationship (Explicit Configuration)
 
-
+            modelBuilder.Entity<Activity>()
+      .HasOne(a => a.Subject)
+      .WithMany()
+      .HasForeignKey(a => a.SubjectId)
+      .OnDelete(DeleteBehavior.Cascade); // Ensure cascade delete is enabled
 
         }
 

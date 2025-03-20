@@ -24,15 +24,27 @@ namespace Online_Learning_App.Application.Services
 
         public async Task<ActivityDto> CreateActivityAsync(CreateActivityDto createActivityDto)
         {
+            // Fetch existing activities for the subject and class
+            var existingActivities = await _activityRepository.GetBySubjectAndClassAsync(createActivityDto.SubjectId, createActivityDto.ClassGroupId.Value);
+
+            // Calculate total weightage including the new activity
+            double totalWeightage = existingActivities.Sum(a => a.WeightagePercent) + createActivityDto.WeightagePercent;
+
+            if (totalWeightage > 100)
+            {
+                throw new InvalidOperationException("Total weightage percent cannot exceed 100 percent.");
+            }
+
             var activity = _mapper.Map<Activity>(createActivityDto);
             activity.ActivityId = Guid.NewGuid(); // Generate a new ID
-            activity.Id = activity.ActivityId; //If Id is needed.
-            activity.ActivityName=activity.ActivityName;
-          //  activity.Validate(); // Domain validation
+            activity.Id = activity.ActivityId; // If Id is needed.
 
             await _activityRepository.AddAsync(activity);
             return _mapper.Map<ActivityDto>(activity);
         }
+
+
+
 
         public async Task<ActivityDto> GetActivityByIdAsync(Guid activityId)
         {

@@ -14,5 +14,6 @@ namespace Online_Learning_App.Domain.Interfaces
         Task AddAsync(Activity activity);
         Task UpdateAsync(Activity activity);
         Task DeleteAsync(Guid id);
+        Task<IEnumerable<Activity>> GetBySubjectAndClassAsync(Guid subjectId, Guid classId);
     }
 }
