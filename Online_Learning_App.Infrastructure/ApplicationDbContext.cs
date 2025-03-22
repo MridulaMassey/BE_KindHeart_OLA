@@ -132,6 +132,19 @@ namespace Online_Learning_App.Infrastructure
         .Property(g => g.MaxMarks)
         .HasPrecision(10, 2);
 
+
+            modelBuilder.Entity<ClassGroupSubjectGrade>()
+          .Property(c => c.ObtainedMarks)
+          .HasColumnType("decimal(18,2)"); // Precision of 18 digits and 2 decimals
+
+            modelBuilder.Entity<Grade>()
+                .Property(g => g.MinMarks)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<SubjectGrade>()
+                .Property(sg => sg.MaxMarks)
+                .HasColumnType("decimal(18,2)");
+
         }
 
     }
