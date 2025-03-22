@@ -19,7 +19,7 @@ namespace Online_Learning_App.Domain.Entities
         public string PdfUrl { get; set; }
         public DateTime DueDate { get; set; }
         public string ClassLevel { get; set; }
-        public double WeightagePercent { get; set; } // Weightage per activity
+        public double WeightagePercent { get; set; } // Weightage per activity 90
         // Define the foreign key for Teacher to Activity
         public Guid TeacherId { get; set; }
     
@@ -40,7 +40,8 @@ namespace Online_Learning_App.Domain.Entities
         [ForeignKey("Subject")]
         public Guid SubjectId { get; set; }
         public virtual Subject Subject { get; set; }
+        public ICollection<ActivityGrade> ActivityGrades { get; set; } = new List<ActivityGrade>();
 
-      
+
     }
 }

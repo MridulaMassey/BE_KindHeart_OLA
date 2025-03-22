@@ -13,5 +13,7 @@ namespace Online_Learning_App.Domain.Entities
 
         // Many-to-Many Relationship with ClassGroup
         public ICollection<ClassGroupSubject> ClassGroups { get; set; } = new List<ClassGroupSubject>();
+        public ICollection<SubjectGrade> SubjectGrades { get; set; } = new List<SubjectGrade>();
+        public ICollection<Activity> Activities { get; set; } = new List<Activity>();
     }
 }

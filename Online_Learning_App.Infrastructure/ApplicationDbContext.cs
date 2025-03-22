@@ -16,6 +16,15 @@ namespace Online_Learning_App.Infrastructure
         public DbSet<Submission> Submissions { get; set; }
         public DbSet<ClassGroup> ClassGroups { get; set; } // **Newly Added**
         public DbSet<Subject> Subjects { get; set; }
+        public DbSet<SubjectGrade> SubjectGrade { get; set; }
+        public DbSet<Grade> Grade { get; set; }
+        public DbSet<FinalGrade> FinalGrade { get; set; }
+
+        public DbSet<ActivityGrade> ActivityGrade { get; set; }
+        
+
+
+        public DbSet<ClassGroupSubjectGrade> ClassGroupSubjectGrade { get; set; }
         public DbSet<Admin> Admin { get; set; }
         public DbSet<ClassGroupSubject> ClassGroupSubjectsInformation
         {
@@ -116,6 +125,12 @@ namespace Online_Learning_App.Infrastructure
       .WithMany()
       .HasForeignKey(a => a.SubjectId)
       .OnDelete(DeleteBehavior.Cascade); // Ensure cascade delete is enabled
+            
+            modelBuilder.Entity<ClassGroupSubjectGrade>()
+           .HasKey(csg => new { csg.ClassGroupId, csg.SubjectId, csg.GradeId });
+            modelBuilder.Entity<Grade>()
+        .Property(g => g.MaxMarks)
+        .HasPrecision(10, 2);
 
         }
 

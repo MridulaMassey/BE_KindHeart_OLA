@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Online_Learning_App.Infrastructure;
 
@@ -11,9 +12,11 @@ using Online_Learning_App.Infrastructure;
 namespace Online_Learning_App.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250322032551_subjectgradeaddedformigration")]
+    partial class subjectgradeaddedformigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,9 +162,6 @@ namespace Online_Learning_App.Infrastructure.Migrations
                     b.Property<Guid>("SubjectId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("SubjectId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("TeacherId")
                         .HasColumnType("uniqueidentifier");
 
@@ -178,35 +178,9 @@ namespace Online_Learning_App.Infrastructure.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.HasIndex("SubjectId1");
-
                     b.HasIndex("TeacherId");
 
                     b.ToTable("Activities", (string)null);
-                });
-
-            modelBuilder.Entity("Online_Learning_App.Domain.Entities.ActivityGrade", b =>
-                {
-                    b.Property<Guid>("ActivityGradeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ActivityId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<double>("Score")
-                        .HasColumnType("float");
-
-                    b.Property<Guid>("StudentId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("ActivityGradeId");
-
-                    b.HasIndex("ActivityId");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("ActivityGrade");
                 });
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.Admin", b =>
@@ -382,37 +356,6 @@ namespace Online_Learning_App.Infrastructure.Migrations
                     b.ToTable("ClassGroupSubjectGrade");
                 });
 
-            modelBuilder.Entity("Online_Learning_App.Domain.Entities.FinalGrade", b =>
-                {
-                    b.Property<Guid>("FinalGradeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<double>("FinalScore")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Grade")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsReleased")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid>("StudentId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("SubjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("FinalGradeId");
-
-                    b.HasIndex("StudentId");
-
-                    b.HasIndex("SubjectId");
-
-                    b.ToTable("FinalGrade");
-                });
-
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.Grade", b =>
                 {
                     b.Property<Guid>("GradeId")
@@ -429,7 +372,7 @@ namespace Online_Learning_App.Infrastructure.Migrations
 
                     b.Property<decimal>("MaxMarks")
                         .HasPrecision(10, 2)
-                        .HasColumnType("decimal(5,2)");
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<decimal>("MinMarks")
                         .HasColumnType("decimal(18,2)");
@@ -530,9 +473,6 @@ namespace Online_Learning_App.Infrastructure.Migrations
 
                     b.Property<bool>("IsOverallGrade")
                         .HasColumnType("bit");
-
-                    b.Property<decimal>("MaxMarks")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("SubjectId")
                         .HasColumnType("uniqueidentifier");
@@ -676,10 +616,6 @@ namespace Online_Learning_App.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Online_Learning_App.Domain.Entities.Subject", null)
-                        .WithMany("Activities")
-                        .HasForeignKey("SubjectId1");
-
                     b.HasOne("Online_Learning_App.Domain.Entities.Teacher", "Teacher")
                         .WithMany()
                         .HasForeignKey("TeacherId")
@@ -691,25 +627,6 @@ namespace Online_Learning_App.Infrastructure.Migrations
                     b.Navigation("Subject");
 
                     b.Navigation("Teacher");
-                });
-
-            modelBuilder.Entity("Online_Learning_App.Domain.Entities.ActivityGrade", b =>
-                {
-                    b.HasOne("Online_Learning_App.Domain.Entities.Activity", "Activity")
-                        .WithMany("ActivityGrades")
-                        .HasForeignKey("ActivityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Online_Learning_App.Domain.Entities.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Activity");
-
-                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.Admin", b =>
@@ -798,25 +715,6 @@ namespace Online_Learning_App.Infrastructure.Migrations
                     b.Navigation("Subject");
                 });
 
-            modelBuilder.Entity("Online_Learning_App.Domain.Entities.FinalGrade", b =>
-                {
-                    b.HasOne("Online_Learning_App.Domain.Entities.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Online_Learning_App.Domain.Entities.Subject", "Subject")
-                        .WithMany()
-                        .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Student");
-
-                    b.Navigation("Subject");
-                });
-
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.Student", b =>
                 {
                     b.HasOne("Online_Learning_App.Domain.Entities.ClassGroup", "ClassGroup")
@@ -900,8 +798,6 @@ namespace Online_Learning_App.Infrastructure.Migrations
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.Activity", b =>
                 {
-                    b.Navigation("ActivityGrades");
-
                     b.Navigation("Submissions");
                 });
 
@@ -937,8 +833,6 @@ namespace Online_Learning_App.Infrastructure.Migrations
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.Subject", b =>
                 {
-                    b.Navigation("Activities");
-
                     b.Navigation("ClassGroups");
 
                     b.Navigation("SubjectGrades");
