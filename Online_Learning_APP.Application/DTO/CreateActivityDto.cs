@@ -13,7 +13,7 @@ namespace Online_Learning_APP.Application.DTO
         public Guid SubjectId { get; set; }
         public string PdfUrl { get; set; }
         public DateTime DueDate { get; set; }
-        public string ClassLevel { get; set; }
+        public string? ClassLevel { get; set; } = null;
         public Guid TeacherId { get; set; }
         public Guid? ClassGroupId { get; set; }
         public string ActivityName { get; set; }
