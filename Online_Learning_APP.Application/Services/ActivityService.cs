@@ -52,6 +52,8 @@ namespace Online_Learning_App.Application.Services
             activity.SubjectId = subjectID;
             activity.ClassGroupId = classGroupid;
             activity.ClassLevel = "Four";
+            activity.PdfUrl = "www.ggole.com";
+            activity.TeacherId = Guid.Parse("F7400196-CDEB-49ED-11BA-08DD64CD7D35");
             await _activityRepository.AddAsync(activity);
             return _mapper.Map<ActivityDto>(activity);
         }
