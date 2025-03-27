@@ -30,8 +30,24 @@ namespace Online_Learning_App.Infrastructure.Repository
 
         public async Task AddAsync(Activity activity)
         {
-            await _dbContext.Activities.AddAsync(activity);
-            await _dbContext.SaveChangesAsync();
+            try
+            {
+                await _dbContext.Activities.AddAsync(activity);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                // Handle database update exceptions (e.g., constraint violations, transaction failures)
+                Console.WriteLine($"Database update error: {ex.Message}");
+                throw new Exception("An error occurred while saving changes to the database.", ex);
+            }
+            catch (Exception ex)
+            {
+                // Handle any other general exceptions
+                Console.WriteLine($"Unexpected error: {ex.Message}");
+                throw new Exception("An unexpected error occurred.", ex);
+            }
+
         }
 
         public async Task UpdateAsync(Activity activity)

@@ -16,21 +16,26 @@ namespace Online_Learning_App.Application.Services
         private readonly IActivityRepository _activityRepository;
         private readonly IMapper _mapper;
         private IFileUploadService _uploadService;
+        private readonly IClassGroupSubjectRepository _classGroupSubjectRepository;
 
-        public ActivityService(IActivityRepository activityRepository, IMapper mapper, IFileUploadService uploadService)
+        public ActivityService(IActivityRepository activityRepository, IMapper mapper, IFileUploadService uploadService, IClassGroupSubjectRepository classGroupSubjectRepository)
         {
             _activityRepository = activityRepository;
             _mapper = mapper;
             _uploadService = uploadService;
+            _classGroupSubjectRepository = classGroupSubjectRepository;
         }
 
         public async Task<ActivityDto> CreateActivityAsync(CreateActivityDto createActivityDto)
         {
             //byte[] filebytetest = Convert.FromBase64String(createActivityDto.PdfFileBase64);
             //var response = _uploadService.UploadFileAsync(filebytetest, createActivityDto.FileName);
+            var subjectidrespnse= await  _classGroupSubjectRepository.GetByClassGroupIdAsync(createActivityDto.ClassGroupId.Value);
+            var subjectID= subjectidrespnse.FirstOrDefault().SubjectId;
+            var classGroupid= subjectidrespnse.FirstOrDefault()?.ClassGroupId;
 
             // Fetch existing activities for the subject and class
-            var existingActivities = await _activityRepository.GetBySubjectAndClassAsync(createActivityDto.SubjectId, createActivityDto.ClassGroupId.Value);
+            var existingActivities = await _activityRepository.GetBySubjectAndClassAsync(subjectID, createActivityDto.ClassGroupId.Value);
 
             // Calculate total weightage including the new activity
             double totalWeightage = existingActivities.Sum(a => a.WeightagePercent) + createActivityDto.WeightagePercent;
@@ -44,7 +49,9 @@ namespace Online_Learning_App.Application.Services
             var activity = _mapper.Map<Activity>(createActivityDto);
             activity.ActivityId = Guid.NewGuid(); // Generate a new ID
             activity.Id = activity.ActivityId; // If Id is needed.
-
+            activity.SubjectId = subjectID;
+            activity.ClassGroupId = classGroupid;
+            activity.ClassLevel = "Four";
             await _activityRepository.AddAsync(activity);
             return _mapper.Map<ActivityDto>(activity);
         }

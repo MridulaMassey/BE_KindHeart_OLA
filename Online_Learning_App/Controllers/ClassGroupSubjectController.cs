@@ -40,7 +40,7 @@ namespace Online_Learning_App_Presentation.Controllers
         }
 
         // Get all ClassGroupSubjects
-        [HttpGet]
+        [HttpGet("classgroupslist")]
         public async Task<IActionResult> GetAll()
         {
             var classGroupSubjects = await _classGroupSubjectService.GetAllClassGroupSubjectsAsync();

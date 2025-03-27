@@ -39,9 +39,11 @@ namespace Online_Learning_APP.Application.Services
             return await _classGroupSubjectRepository.GetByIdAsync(id);
         }
 
-        public async Task<IEnumerable<ClassGroupSubject>> GetAllClassGroupSubjectsAsync()
+        public async Task<IEnumerable<ClassGroupSubjectDto>> GetAllClassGroupSubjectsAsync()
         {
-            return await _classGroupSubjectRepository.GetAllAsync();
+            var response = await _classGroupSubjectRepository.GetAllAsync();
+            return _mapper.Map<IEnumerable<ClassGroupSubjectDto>>(response);
+           
         }
 
         public async Task<IEnumerable<ClassGroupSubject>> GetByClassGroupIdAsync(Guid classGroupId)

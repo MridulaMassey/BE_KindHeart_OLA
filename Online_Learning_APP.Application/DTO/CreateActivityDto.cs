@@ -17,8 +17,9 @@ namespace Online_Learning_APP.Application.DTO
             get; set;
         }
             public string Description { get; set; }
+        public string? ClassGroupClassName { get; set; } = null;
 
-            public string? ClassLevel { get; set; } = null;
+        public string? ClassLevel { get; set; } = null;
             public DateTime DueDate { get; set; }
             public string FileName { get; set; }
             public string PdfFileBase64 { get; set; }

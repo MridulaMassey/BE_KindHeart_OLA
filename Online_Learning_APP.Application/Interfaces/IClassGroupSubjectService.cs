@@ -12,7 +12,7 @@ namespace Online_Learning_APP.Application.Interfaces
     {
         Task<ClassGroupSubjectDto> AddClassGroupSubjectAsync(ClassGroupSubjectDto classGroupSubject);
         Task<ClassGroupSubject> GetClassGroupSubjectByIdAsync(Guid id);
-        Task<IEnumerable<ClassGroupSubject>> GetAllClassGroupSubjectsAsync();
+        Task<IEnumerable<ClassGroupSubjectDto>> GetAllClassGroupSubjectsAsync();
         Task<IEnumerable<ClassGroupSubject>> GetByClassGroupIdAsync(Guid classGroupId);
         Task<IEnumerable<ClassGroupSubject>> GetBySubjectIdAsync(Guid subjectId);
         Task UpdateClassGroupSubjectAsync(ClassGroupSubjectDto classGroupSubject);
