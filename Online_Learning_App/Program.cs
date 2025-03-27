@@ -81,6 +81,10 @@ builder.Services.AddScoped<IClassGroupService, ClassGroupService>();
 builder.Services.AddScoped<ISubjectService, SubjectService>();
 builder.Services.AddScoped<IGradeService, GradeService>();
 builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
+builder.Services.AddScoped<IFileUploadService, FileUploadService>();
+builder.Services.AddScoped<IClassGroupService, ClassGroupService>();
+builder.Services.AddScoped<IClassGroupSubjectService, ClassGroupSubjectService>();
+builder.Services.AddScoped<IClassGroupSubjectRepository, ClassGroupSubjectRepository>();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllers();

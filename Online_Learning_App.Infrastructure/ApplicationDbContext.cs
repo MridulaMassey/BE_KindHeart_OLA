@@ -21,7 +21,9 @@ namespace Online_Learning_App.Infrastructure
         public DbSet<FinalGrade> FinalGrade { get; set; }
 
         public DbSet<ActivityGrade> ActivityGrade { get; set; }
+        public DbSet<ClassGroupSubject> ClassGroupSubject { get; set; }
         
+
 
 
         public DbSet<ClassGroupSubjectGrade> ClassGroupSubjectGrade { get; set; }

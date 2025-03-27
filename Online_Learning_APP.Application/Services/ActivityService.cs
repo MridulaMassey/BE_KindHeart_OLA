@@ -15,15 +15,20 @@ namespace Online_Learning_App.Application.Services
     {
         private readonly IActivityRepository _activityRepository;
         private readonly IMapper _mapper;
+        private IFileUploadService _uploadService;
 
-        public ActivityService(IActivityRepository activityRepository, IMapper mapper)
+        public ActivityService(IActivityRepository activityRepository, IMapper mapper, IFileUploadService uploadService)
         {
             _activityRepository = activityRepository;
             _mapper = mapper;
+            _uploadService = uploadService;
         }
 
         public async Task<ActivityDto> CreateActivityAsync(CreateActivityDto createActivityDto)
         {
+            //byte[] filebytetest = Convert.FromBase64String(createActivityDto.PdfFileBase64);
+            //var response = _uploadService.UploadFileAsync(filebytetest, createActivityDto.FileName);
+
             // Fetch existing activities for the subject and class
             var existingActivities = await _activityRepository.GetBySubjectAndClassAsync(createActivityDto.SubjectId, createActivityDto.ClassGroupId.Value);
 
@@ -35,6 +40,7 @@ namespace Online_Learning_App.Application.Services
                 throw new InvalidOperationException("Total weightage percent cannot exceed 100 percent.");
             }
 
+            
             var activity = _mapper.Map<Activity>(createActivityDto);
             activity.ActivityId = Guid.NewGuid(); // Generate a new ID
             activity.Id = activity.ActivityId; // If Id is needed.

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Online_Learning_App.Domain.Interfaces;
+using Online_Learning_APP.Application.Interfaces;
 
 namespace Online_Learning_APP.Application.Services
 {
-    public class FileUploadService
+    public class FileUploadService: IFileUploadService
     {
         private readonly IGoogleDriveService _googleDriveService;
 
