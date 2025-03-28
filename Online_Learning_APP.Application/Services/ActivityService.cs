@@ -47,6 +47,8 @@ namespace Online_Learning_App.Application.Services
 
             
             var activity = _mapper.Map<Activity>(createActivityDto);
+            activity.Feedback=createActivityDto.Feedback;
+            activity.HasFeedback=createActivityDto.HasFeedback;
             activity.ActivityId = Guid.NewGuid(); // Generate a new ID
             activity.Id = activity.ActivityId; // If Id is needed.
             activity.SubjectId = subjectID;

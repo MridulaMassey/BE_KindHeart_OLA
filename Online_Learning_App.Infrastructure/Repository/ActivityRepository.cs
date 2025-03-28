@@ -20,7 +20,13 @@ namespace Online_Learning_App.Infrastructure.Repository
 
         public async Task<Activity> GetByIdAsync(Guid id)
         {
-            return await _dbContext.Activities.FindAsync(id);
+            //return await _dbContext.ClassGroupSubject
+            // .Include(cgs => cgs.ClassGroup)
+            //  .Include(cgs => cgs.Subject)
+            //   .FirstOrDefaultAsync(cgs => cgs.ClassGroupSubjectId == id);
+
+            return await _dbContext.Activities
+                .Include(cgs => cgs.Teacher).ThenInclude(a=>a.User).FirstOrDefaultAsync(a => a.Id == id);
         }
 
         public async Task<IEnumerable<Activity>> GetAllAsync()

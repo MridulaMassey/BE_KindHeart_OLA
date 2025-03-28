@@ -22,8 +22,10 @@ namespace Online_Learning_App.Domain.Entities
         public double WeightagePercent { get; set; } // Weightage per activity 90
         // Define the foreign key for Teacher to Activity
         public Guid TeacherId { get; set; }
-    
-        public virtual Teacher Teacher { get; set; }
+        public Boolean HasFeedback { get; set; } = false;
+        public string Feedback { get; set; }
+
+        public Teacher Teacher { get; set; }
         //public Guid ClassGroupId { get; set; }
         //public ClassGroup? ClassGroup { get; set; }
         //// Create the relationship with Submission
