@@ -48,13 +48,15 @@ namespace Online_Learning_App.Application.Services
             
             var activity = _mapper.Map<Activity>(createActivityDto);
             activity.Feedback=createActivityDto.Feedback;
-            activity.HasFeedback=createActivityDto.HasFeedback;
+            activity.HasFeedback=createActivityDto?.HasFeedback.Value;
             activity.ActivityId = Guid.NewGuid(); // Generate a new ID
             activity.Id = activity.ActivityId; // If Id is needed.
             activity.SubjectId = subjectID;
             activity.ClassGroupId = classGroupid;
             activity.ClassLevel = "Four";
             activity.PdfUrl = "www.ggole.com";
+
+            
             activity.TeacherId = Guid.Parse("F7400196-CDEB-49ED-11BA-08DD64CD7D35");
             await _activityRepository.AddAsync(activity);
             return _mapper.Map<ActivityDto>(activity);
@@ -76,7 +78,7 @@ namespace Online_Learning_App.Application.Services
             return _mapper.Map<IEnumerable<ActivityDto>>(activities);
         }
 
-        // ✅ Update Activity
+        // ✅ Update Activity by teacher
         public async Task<ActivityDto> UpdateActivityAsync(Guid activityId, UpdateActivityDto updateActivityDto)
         {
             var activity = await _activityRepository.GetByIdAsync(activityId);
@@ -85,9 +87,16 @@ namespace Online_Learning_App.Application.Services
                 return null;
             }
 
+            //   this for student
             // Update properties
-            activity.ActivityName = updateActivityDto.ActivityName ?? activity.ActivityName;
-            activity.Description = updateActivityDto.Description ?? activity.Description;
+            //activity.ActivityName = updateActivityDto.ActivityName ?? activity.ActivityName;
+            //activity.Description = updateActivityDto.Description ?? activity.Description;
+
+
+            // byte array
+            activity.StudentPdfUrl = "WWW.google.com";
+       //     activity.StudentPdfUrl = updateActivityDto.FileBase64 ?? activity.Description;
+            
 
             await _activityRepository.UpdateAsync(activity);
             return _mapper.Map<ActivityDto>(activity);

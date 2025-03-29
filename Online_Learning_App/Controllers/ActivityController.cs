@@ -26,7 +26,7 @@ namespace Online_Learning_App_Presentation.Controllers
             return CreatedAtAction(nameof(GetActivityById), new { id = activityDto.ActivityId }, activityDto);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("activitychanges/{id}")]
         public async Task<ActionResult<ActivityDto>> GetActivityById(Guid id)
         {
             var activityDto = await _activityService.GetActivityByIdAsync(id);

@@ -1,49 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using Online_Learning_App.Domain.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Online_Learning_App.Domain.Entities
+public class Activity
 {
-    // Domain Entity: Activity
-    public class Activity
-    {
-       
-        public Guid ActivityId { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string PdfUrl { get; set; }
-        public DateTime DueDate { get; set; }
-        public string ClassLevel { get; set; }
-        public double WeightagePercent { get; set; } // Weightage per activity 90
-        // Define the foreign key for Teacher to Activity
-        public Guid TeacherId { get; set; }
-        public Boolean HasFeedback { get; set; } = false;
-        public string Feedback { get; set; }
+    public Guid ActivityId { get; set; }
+    public string Title { get; set; }
+    public string Description { get; set; }
+    public string PdfUrl { get; set; }
 
-        public Teacher Teacher { get; set; }
-        //public Guid ClassGroupId { get; set; }
-        //public ClassGroup? ClassGroup { get; set; }
-        //// Create the relationship with Submission
-        public ICollection<Submission> Submissions { get; set; } = new List<Submission>();
+    public string? StudentPdfUrl { get; set; }
+    public DateTime DueDate { get; set; }
+    public string ClassLevel { get; set; }
+    public double WeightagePercent { get; set; }
+    // Define the foreign key for Teacher to Activity
+    public Guid TeacherId { get; set; }
+    public bool? HasFeedback { get; set; } = false;
+    public string? Feedback { get; set; }
 
-        public Guid Id { get; set; }
-        public string ActivityName { get; set; }
+    // Teacher who assigned the activity
 
-        // Make sure this is nullable
-        public Guid? ClassGroupId { get; set; }
+    public Teacher Teacher { get; set; }
 
-        public ClassGroup ClassGroup { get; set; }
+    // Student who submitted the activity (nullable for teacher-assigned)
+    public Guid? StudentId { get; set; }
+    public Student Student { get; set; }
+    public Guid Id { get; set; }
+    public string ActivityName { get; set; }
 
-        [ForeignKey("Subject")]
-        public Guid SubjectId { get; set; }
-        public virtual Subject Subject { get; set; }
-        public ICollection<ActivityGrade> ActivityGrades { get; set; } = new List<ActivityGrade>();
+  
+
+    public Guid? ClassGroupId { get; set; }
+    public ClassGroup ClassGroup { get; set; }
+
+    [ForeignKey("Subject")]
+    public Guid SubjectId { get; set; }
+    public virtual Subject Subject { get; set; }
+
+    // Activity Type: Assignment (Teacher) or Submission (Student)
+    public ActivityType Type { get; set; }
+
+    public ICollection<ActivityGrade> ActivityGrades { get; set; } = new List<ActivityGrade>();
+    public ICollection<Submission> Submissions { get; set; } = new List<Submission>();
+}
 
 
-    }
+// Enum to define if it's a teacher-assigned activity or student submission
+public enum ActivityType
+{
+    Assignment, // Assigned by teacher
+    Submission  // Submitted by student
 }

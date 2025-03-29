@@ -27,8 +27,8 @@ namespace Online_Learning_APP.Application.DTO
         public string TeacherUserFirstName { get; set; }
         public string TeacherUserLastName { get; set; }
         public Guid? ClassGroupId { get; set; }
-        public Boolean HasFeedback { get; set; } = false;
-        public string Feedback { get; set; }
+        public Boolean? HasFeedback { get; set; } = false;
+        public string? Feedback { get; set; }
         public double WeightagePercent { get; set; } // Weightage per activity 90
     
     }

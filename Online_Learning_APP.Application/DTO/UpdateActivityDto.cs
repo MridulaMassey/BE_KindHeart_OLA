@@ -8,7 +8,14 @@ namespace Online_Learning_APP.Application.DTO
 {
     public class UpdateActivityDto
     {
-        public string ActivityName { get; set; }
-        public string Description { get; set; }
+        public string ActivityId { get; set; }
+        public string FileBase64 { get; set; }
+        public string FileName { get; set; }
+        public string? StudentId { get; set; }
+
+        //for teacher
+        //public string ActivityName { get; set; }
+        //public string Description { get; set; }
+
     }
 }
