@@ -30,12 +30,12 @@ namespace Online_Learning_App.Application.Services
         {
             byte[] filebytetest = Convert.FromBase64String(createActivityDto.PdfFileBase64);
             var response = await _uploadService.UploadFileAsync(filebytetest, createActivityDto.FileName);
-            var subjectidrespnse = await _classGroupSubjectRepository.GetByClassGroupIdAsync(createActivityDto.ClassGroupId.Value);
-            var subjectID = subjectidrespnse.FirstOrDefault().SubjectId;
-            var classGroupid = subjectidrespnse.FirstOrDefault()?.ClassGroupId;
+            //    var subjectidrespnse= await  _classGroupSubjectRepository.GetByClassGroupIdAsync(createActivityDto.ClassGroupId.Value);
+            // var subjectID= subjectidrespnse.FirstOrDefault().SubjectId;
+            //   var classGroupid= subjectidrespnse.FirstOrDefault()?.ClassGroupId;
 
             // Fetch existing activities for the subject and class
-            var existingActivities = await _activityRepository.GetBySubjectAndClassAsync(subjectID, createActivityDto.ClassGroupId.Value);
+            var existingActivities = await _activityRepository.GetBySubjectAndClassAsync(createActivityDto.SubjectId, createActivityDto.ClassGroupId.Value);
 
             // Calculate total weightage including the new activity
             double totalWeightage = existingActivities.Sum(a => a.WeightagePercent) + createActivityDto.WeightagePercent;
@@ -51,8 +51,8 @@ namespace Online_Learning_App.Application.Services
             activity.HasFeedback = createActivityDto?.HasFeedback.Value;
             activity.ActivityId = Guid.NewGuid(); // Generate a new ID
             activity.Id = activity.ActivityId; // If Id is needed.
-            activity.SubjectId = subjectID;
-            activity.ClassGroupId = classGroupid;
+            activity.SubjectId = createActivityDto.SubjectId;
+            activity.ClassGroupId = createActivityDto.ClassGroupId;
             activity.ClassLevel = "Four";
             activity.PdfUrl = response.ToString();
 

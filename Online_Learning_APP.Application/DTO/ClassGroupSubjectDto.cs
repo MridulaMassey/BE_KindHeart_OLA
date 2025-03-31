@@ -12,6 +12,7 @@ namespace Online_Learning_APP.Application.DTO
         public Guid? ClassGroupSubjectId { get; set; }
         public Guid ClassGroupId { get; set; }
         public string ClassGroupClassName { get; set; }
+        public string SubjectSubjectName { get; set; }
 
         public Guid SubjectId { get; set; }
 
