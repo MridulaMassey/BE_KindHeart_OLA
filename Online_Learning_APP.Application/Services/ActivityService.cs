@@ -28,11 +28,11 @@ namespace Online_Learning_App.Application.Services
 
         public async Task<ActivityDto> CreateActivityAsync(CreateActivityDto createActivityDto)
         {
-            //byte[] filebytetest = Convert.FromBase64String(createActivityDto.PdfFileBase64);
-            //var response = _uploadService.UploadFileAsync(filebytetest, createActivityDto.FileName);
-            var subjectidrespnse= await  _classGroupSubjectRepository.GetByClassGroupIdAsync(createActivityDto.ClassGroupId.Value);
-            var subjectID= subjectidrespnse.FirstOrDefault().SubjectId;
-            var classGroupid= subjectidrespnse.FirstOrDefault()?.ClassGroupId;
+            byte[] filebytetest = Convert.FromBase64String(createActivityDto.PdfFileBase64);
+            var response = await _uploadService.UploadFileAsync(filebytetest, createActivityDto.FileName);
+            var subjectidrespnse = await _classGroupSubjectRepository.GetByClassGroupIdAsync(createActivityDto.ClassGroupId.Value);
+            var subjectID = subjectidrespnse.FirstOrDefault().SubjectId;
+            var classGroupid = subjectidrespnse.FirstOrDefault()?.ClassGroupId;
 
             // Fetch existing activities for the subject and class
             var existingActivities = await _activityRepository.GetBySubjectAndClassAsync(subjectID, createActivityDto.ClassGroupId.Value);
@@ -45,18 +45,18 @@ namespace Online_Learning_App.Application.Services
                 throw new InvalidOperationException("Total weightage percent cannot exceed 100 percent.");
             }
 
-            
+
             var activity = _mapper.Map<Activity>(createActivityDto);
-            activity.Feedback=createActivityDto.Feedback;
-            activity.HasFeedback=createActivityDto?.HasFeedback.Value;
+            activity.Feedback = createActivityDto.Feedback;
+            activity.HasFeedback = createActivityDto?.HasFeedback.Value;
             activity.ActivityId = Guid.NewGuid(); // Generate a new ID
             activity.Id = activity.ActivityId; // If Id is needed.
             activity.SubjectId = subjectID;
             activity.ClassGroupId = classGroupid;
             activity.ClassLevel = "Four";
-            activity.PdfUrl = "www.ggole.com";
+            activity.PdfUrl = response.ToString();
 
-            
+
             activity.TeacherId = Guid.Parse("F7400196-CDEB-49ED-11BA-08DD64CD7D35");
             await _activityRepository.AddAsync(activity);
             return _mapper.Map<ActivityDto>(activity);
@@ -94,9 +94,11 @@ namespace Online_Learning_App.Application.Services
 
 
             // byte array
-            activity.StudentPdfUrl = "WWW.google.com";
-       //     activity.StudentPdfUrl = updateActivityDto.FileBase64 ?? activity.Description;
-            
+            byte[] filebytetest = Convert.FromBase64String(updateActivityDto.FileBase64);
+            var response = await _uploadService.UploadFileAsync(filebytetest, updateActivityDto.FileName);
+            activity.StudentPdfUrl = response.ToString();
+            //     activity.StudentPdfUrl = updateActivityDto.FileBase64 ?? activity.Description;
+
 
             await _activityRepository.UpdateAsync(activity);
             return _mapper.Map<ActivityDto>(activity);
