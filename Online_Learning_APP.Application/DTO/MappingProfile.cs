@@ -23,6 +23,11 @@ namespace Online_Learning_APP.Application.DTO
             CreateMap<Grade, ActivityGradeDto>().ReverseMap();
             CreateMap<ClassGroupSubject, ClassGroupSubjectDto>().ReverseMap();
 
+            //     CreateMap<Subject, SubjectDto>()
+            //.ForMember(dest => dest.Activities, opt => opt.MapFrom(src => src.Activities)).ReverseMap();
+
+            CreateMap<Activity, ActivityDto>();
+
             // Add other mappings as needed
 
         }

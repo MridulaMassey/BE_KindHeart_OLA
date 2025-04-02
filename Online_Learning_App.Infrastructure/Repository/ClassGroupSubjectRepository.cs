@@ -28,7 +28,7 @@ namespace Online_Learning_App.Infrastructure.Repository
         {
             return await _dbContext.ClassGroupSubject
               .Include(cgs => cgs.ClassGroup)
-               .Include(cgs => cgs.Subject)
+               .Include(cgs => cgs.Subject).ThenInclude(a=> a.Activities)
                 .FirstOrDefaultAsync(cgs => cgs.ClassGroupSubjectId == id);
         }
 
@@ -52,7 +52,7 @@ namespace Online_Learning_App.Infrastructure.Repository
         {
             return await _dbContext.ClassGroupSubject
                 .Where(cgs => cgs.SubjectId == subjectId)
-                .Include(cgs => cgs.ClassGroup)
+                .Include(cgs => cgs.ClassGroup).ThenInclude(a => a.Activities)
                 .ToListAsync();
         }
 

@@ -44,7 +44,14 @@ namespace Online_Learning_App.Application.Services
             {
                 throw new InvalidOperationException("Total weightage percent cannot exceed 100 percent.");
             }
+            var classGroupSubject = new ClassGroupSubject
+            {
+                ClassGroupSubjectId = Guid.NewGuid(),
+                ClassGroupId = createActivityDto.ClassGroupId.Value,
+                SubjectId = createActivityDto.SubjectId
+            };
 
+            await _classGroupSubjectRepository.AddAsync(classGroupSubject);
 
             var activity = _mapper.Map<Activity>(createActivityDto);
             activity.Feedback = createActivityDto.Feedback;
@@ -58,14 +65,13 @@ namespace Online_Learning_App.Application.Services
 
 
             activity.TeacherId = Guid.Parse("F7400196-CDEB-49ED-11BA-08DD64CD7D35");
+          
             await _activityRepository.AddAsync(activity);
             return _mapper.Map<ActivityDto>(activity);
         }
 
 
-
-
-        public async Task<ActivityDto> GetActivityByIdAsync(Guid activityId)
+            public async Task<ActivityDto> GetActivityByIdAsync(Guid activityId)
         {
             var activity = await _activityRepository.GetByIdAsync(activityId);
             return activity == null ? null : _mapper.Map<ActivityDto>(activity);
