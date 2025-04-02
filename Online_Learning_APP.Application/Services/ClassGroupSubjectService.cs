@@ -28,22 +28,24 @@ namespace Online_Learning_APP.Application.Services
             var activity = _mapper.Map<ClassGroupSubject>(classGroupSubject);
             activity.ClassGroupSubjectId = Guid.NewGuid(); // Generate a new ID
             activity.SubjectId = classGroupSubject.SubjectId; // If Id is needed.
-            activity.ClassGroupId= classGroupSubject.ClassGroupId;
+            activity.ClassGroupId = classGroupSubject.ClassGroupId;
             await _classGroupSubjectRepository.AddAsync(activity);
             //  await _classGroupSubjectRepository.AddAsync(classGroupSubject);
             return _mapper.Map<ClassGroupSubjectDto>(activity);
         }
 
-        public async Task<ClassGroupSubject> GetClassGroupSubjectByIdAsync(Guid id)
+        public async Task<ClassGroupSubjectDto> GetClassGroupSubjectByIdAsync(Guid id)
         {
-            return await _classGroupSubjectRepository.GetByIdAsync(id);
+            var subjectGroup = await _classGroupSubjectRepository.GetByIdAsync(id);
+            return subjectGroup == null ? null : _mapper.Map<ClassGroupSubjectDto>(subjectGroup);
+            //  return await _classGroupSubjectRepository.GetByIdAsync(id);
         }
 
         public async Task<IEnumerable<ClassGroupSubjectDto>> GetAllClassGroupSubjectsAsync()
         {
             var response = await _classGroupSubjectRepository.GetAllAsync();
             return _mapper.Map<IEnumerable<ClassGroupSubjectDto>>(response);
-           
+
         }
 
         public async Task<IEnumerable<ClassGroupSubject>> GetByClassGroupIdAsync(Guid classGroupId)
@@ -51,9 +53,13 @@ namespace Online_Learning_APP.Application.Services
             return await _classGroupSubjectRepository.GetByClassGroupIdAsync(classGroupId);
         }
 
-        public async Task<IEnumerable<ClassGroupSubject>> GetBySubjectIdAsync(Guid subjectId)
+
+        public async Task<IEnumerable<ClassGroupSubjectDto>> GetBySubjectIdAsync(Guid subjectId)
         {
-            return await _classGroupSubjectRepository.GetBySubjectIdAsync(subjectId);
+            var subjectGroup = await _classGroupSubjectRepository.GetBySubjectIdAsync(subjectId);
+            return subjectGroup == null ? null : _mapper.Map<IEnumerable<ClassGroupSubjectDto>>(subjectGroup);
+
+            // return await _classGroupSubjectRepository.GetBySubjectIdAsync(subjectId);
         }
 
         public async Task UpdateClassGroupSubjectAsync(ClassGroupSubjectDto classGroupSubject)

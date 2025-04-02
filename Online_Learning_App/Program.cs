@@ -23,6 +23,8 @@ using AutoMapper; // Add thi
 using System.Reflection;
 using Online_Learning_App.Infrastructure.Service; // Add this line
 using Online_Learning_App.Domain.Interfaces;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -66,6 +68,11 @@ builder.Services.AddCors(options =>
         builder => builder.AllowAnyOrigin()
                           .AllowAnyMethod()
                           .AllowAnyHeader());
+});
+builder.Services.AddSingleton(new JsonSerializerOptions
+{
+    ReferenceHandler = ReferenceHandler.Preserve,
+    WriteIndented = true
 });
 
 builder.Services.AddControllers();
