@@ -36,6 +36,10 @@ public class Activity
     public Guid SubjectId { get; set; }
     public virtual Subject Subject { get; set; }
 
+  
+    public Guid? ClassGroupSubjectId { get; set; }
+    public virtual ClassGroupSubject ClassGroupSubject { get; set; }
+
     // Activity Type: Assignment (Teacher) or Submission (Student)
     public ActivityType Type { get; set; }
 

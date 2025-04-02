@@ -44,9 +44,10 @@ namespace Online_Learning_App.Application.Services
             {
                 throw new InvalidOperationException("Total weightage percent cannot exceed 100 percent.");
             }
+            var classgroupid = Guid.NewGuid();
             var classGroupSubject = new ClassGroupSubject
             {
-                ClassGroupSubjectId = Guid.NewGuid(),
+                ClassGroupSubjectId = classgroupid,
                 ClassGroupId = createActivityDto.ClassGroupId.Value,
                 SubjectId = createActivityDto.SubjectId
             };
@@ -62,7 +63,7 @@ namespace Online_Learning_App.Application.Services
             activity.ClassGroupId = createActivityDto.ClassGroupId;
             activity.ClassLevel = "Four";
             activity.PdfUrl = response.ToString();
-
+            activity.ClassGroupSubjectId = classgroupid;
 
             activity.TeacherId = Guid.Parse("F7400196-CDEB-49ED-11BA-08DD64CD7D35");
           
