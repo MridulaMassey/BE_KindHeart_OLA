@@ -21,7 +21,7 @@ namespace Online_Learning_App.Infrastructure.Repository
        //public async Task<IEnumerable<ClassGroupSubjectActivity>> GetAllAsync() => await _context.ClassGroupSubjectActivities.ToListAsync();
         public async Task<IEnumerable<ClassGroupSubjectActivity>> GetAllAsync()
         {
-            return await _context.ClassGroupSubjectActivities.ToListAsync();
+            return await _context.ClassGroupSubjectActivities.Include(a=>a.ClassGroupSubject).Include(a=>a.Activity).ToListAsync();
         }
 
         public async Task<ClassGroupSubjectActivity> GetByIdAsync(Guid id) => await _context.ClassGroupSubjectActivities.FindAsync(id);
