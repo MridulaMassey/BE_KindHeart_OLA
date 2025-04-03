@@ -92,6 +92,8 @@ builder.Services.AddScoped<IFileUploadService, FileUploadService>();
 builder.Services.AddScoped<IClassGroupService, ClassGroupService>();
 builder.Services.AddScoped<IClassGroupSubjectService, ClassGroupSubjectService>();
 builder.Services.AddScoped<IClassGroupSubjectRepository, ClassGroupSubjectRepository>();
+builder.Services.AddScoped<IClassGroupSubjectActivityRepository, ClassGroupSubjectActivityRepository>();
+builder.Services.AddScoped<IClassGroupSubjectActivityService, ClassGroupSubjectActivityService>();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllers();

@@ -5,6 +5,8 @@ using AutoMapper; // Assuming you're using AutoMapper
 //using Online_Learning_App.Application.Interfaces;
 using Online_Learning_App.Domain.Entities;
 using Online_Learning_App.Domain.Interfaces;
+using Online_Learning_App.Infrastructure.Migrations;
+using Online_Learning_App.Infrastructure.Repository;
 using Online_Learning_APP.Application.DTO;
 using Online_Learning_APP.Application.Interfaces;
 //using Online_Learning_App.Infrastructure.Persistence.Interfaces; // Assuming a repository
@@ -17,13 +19,16 @@ namespace Online_Learning_App.Application.Services
         private readonly IMapper _mapper;
         private IFileUploadService _uploadService;
         private readonly IClassGroupSubjectRepository _classGroupSubjectRepository;
+        private readonly IClassGroupSubjectActivityRepository _classGroupSubjectActivityRepository;
+        
 
-        public ActivityService(IActivityRepository activityRepository, IMapper mapper, IFileUploadService uploadService, IClassGroupSubjectRepository classGroupSubjectRepository)
+        public ActivityService(IActivityRepository activityRepository, IMapper mapper, IFileUploadService uploadService, IClassGroupSubjectRepository classGroupSubjectRepository, IClassGroupSubjectActivityRepository classGroupSubjectActivityRepository)
         {
             _activityRepository = activityRepository;
             _mapper = mapper;
             _uploadService = uploadService;
             _classGroupSubjectRepository = classGroupSubjectRepository;
+            _classGroupSubjectActivityRepository=classGroupSubjectActivityRepository;
         }
 
         public async Task<ActivityDto> CreateActivityAsync(CreateActivityDto createActivityDto)
@@ -64,10 +69,18 @@ namespace Online_Learning_App.Application.Services
             activity.ClassLevel = "Four";
             activity.PdfUrl = response.ToString();
             activity.ClassGroupSubjectId = classgroupid;
-
+            var classgrpactivity = Guid.NewGuid();
+            //await _classGroupSubjectRepository.AddAsync(classGroupSubject);
             activity.TeacherId = Guid.Parse("F7400196-CDEB-49ED-11BA-08DD64CD7D35");
-          
-            await _activityRepository.AddAsync(activity);
+            var classGroupSubjectActivity = new ClassGroupSubjectActivity
+            {
+                ClassGroupSubjectActivityId= classgrpactivity,
+                ClassGroupSubjectId = classgroupid,
+             ActivityId= activity.ActivityId,
+            };
+          // await _classGroupSubjectActivityRepository.CreateAsync(classGroupSubjectActivity);
+              await _activityRepository.AddAsync(activity);
+           await _classGroupSubjectActivityRepository.CreateAsync(classGroupSubjectActivity);
             return _mapper.Map<ActivityDto>(activity);
         }
 

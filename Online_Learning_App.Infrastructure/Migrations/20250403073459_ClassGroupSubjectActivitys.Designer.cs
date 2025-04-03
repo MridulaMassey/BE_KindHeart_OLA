@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Online_Learning_App.Infrastructure;
 
@@ -11,9 +12,11 @@ using Online_Learning_App.Infrastructure;
 namespace Online_Learning_App.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250403073459_ClassGroupSubjectActivitys")]
+    partial class ClassGroupSubjectActivitys
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -379,27 +382,6 @@ namespace Online_Learning_App.Infrastructure.Migrations
                     b.HasIndex("SubjectId");
 
                     b.ToTable("ClassGroupSubject");
-                });
-
-            modelBuilder.Entity("Online_Learning_App.Domain.Entities.ClassGroupSubjectActivity", b =>
-                {
-                    b.Property<Guid>("ClassGroupSubjectActivityId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ActivityId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ClassGroupSubjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("ClassGroupSubjectActivityId");
-
-                    b.HasIndex("ActivityId");
-
-                    b.HasIndex("ClassGroupSubjectId");
-
-                    b.ToTable("ClassGroupSubjectActivities");
                 });
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.ClassGroupSubjectGrade", b =>
@@ -824,25 +806,6 @@ namespace Online_Learning_App.Infrastructure.Migrations
                     b.Navigation("ClassGroup");
 
                     b.Navigation("Subject");
-                });
-
-            modelBuilder.Entity("Online_Learning_App.Domain.Entities.ClassGroupSubjectActivity", b =>
-                {
-                    b.HasOne("Activity", "Activity")
-                        .WithMany()
-                        .HasForeignKey("ActivityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Online_Learning_App.Domain.Entities.ClassGroupSubject", "ClassGroupSubject")
-                        .WithMany()
-                        .HasForeignKey("ClassGroupSubjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Activity");
-
-                    b.Navigation("ClassGroupSubject");
                 });
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.ClassGroupSubjectGrade", b =>
