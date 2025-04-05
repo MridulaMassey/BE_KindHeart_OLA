@@ -9,6 +9,7 @@ namespace Online_Learning_APP.Application.Interfaces
 {
     public interface IGradeService
     {
+        Task AssignGradeToActivityTeacher(ActivityGradeDto activityGradeDto);
         Task AssignGradeToActivity(ActivityGradeDto activityGradeDto);
         Task<double> CalculateFinalGrade(FinalGradeDto finalGradeDto);
         Task<bool> ReleaseFinalGrade(FinalGradeDto finalGradeDto);

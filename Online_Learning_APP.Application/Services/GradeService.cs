@@ -32,6 +32,19 @@ namespace Online_Learning_APP.Application.Services
             await _context.ActivityGrade.AddAsync(activityGrade);
             await _context.SaveChangesAsync();
         }
+        public async Task AssignGradeToActivityTeacher(ActivityGradeDto activityGradeDto)
+        {
+            var activityGrade = new ActivityGrade
+            {
+                ActivityGradeId = Guid.NewGuid(),
+                StudentId = activityGradeDto.StudentId,
+                ActivityId = activityGradeDto.ActivityId,
+                Score = activityGradeDto.Score
+            };
+
+            await _context.ActivityGrade.AddAsync(activityGrade);
+            await _context.SaveChangesAsync();
+        }
 
         public async Task<double> CalculateFinalGrade(FinalGradeDto finalGradeDto)
         {

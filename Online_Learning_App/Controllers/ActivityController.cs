@@ -26,6 +26,14 @@ namespace Online_Learning_App_Presentation.Controllers
             return CreatedAtAction(nameof(GetActivityById), new { id = activityDto.ActivityId }, activityDto);
         }
 
+
+        [HttpPut("teachersubmission")]
+        public async Task<ActionResult<ActivityDto>> CreateActivityTeacher([FromBody] UpdateTeacherSubmissionDto createActivityDto)
+        {
+            var activityDto = await _activityService.UpdateTeacherActivityAsync(createActivityDto);
+            return CreatedAtAction(nameof(GetActivityById), new { id = activityDto.ActivityId }, activityDto);
+        }
+
         [HttpGet("activitychanges/{id}")]
         public async Task<ActionResult<ActivityDto>> GetActivityById(Guid id)
         {

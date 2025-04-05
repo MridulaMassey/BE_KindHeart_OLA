@@ -9,6 +9,7 @@ namespace Online_Learning_APP.Application.Interfaces
 {
     public interface IActivityService
     {
+        Task<ActivityDto> UpdateTeacherActivityAsync(UpdateTeacherSubmissionDto createActivity);
         Task<ActivityDto> CreateActivityAsync(CreateActivityDto createActivity);
         Task<ActivityDto> GetActivityByIdAsync(Guid activityId);
         Task<IEnumerable<ActivityDto>> GetAllActivitiesAsync();

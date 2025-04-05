@@ -9,6 +9,7 @@ using Online_Learning_App.Infrastructure.Migrations;
 using Online_Learning_App.Infrastructure.Repository;
 using Online_Learning_APP.Application.DTO;
 using Online_Learning_APP.Application.Interfaces;
+using Online_Learning_APP.Application.Services;
 //using Online_Learning_App.Infrastructure.Persistence.Interfaces; // Assuming a repository
 
 namespace Online_Learning_App.Application.Services
@@ -20,15 +21,17 @@ namespace Online_Learning_App.Application.Services
         private IFileUploadService _uploadService;
         private readonly IClassGroupSubjectRepository _classGroupSubjectRepository;
         private readonly IClassGroupSubjectActivityRepository _classGroupSubjectActivityRepository;
-        
 
-        public ActivityService(IActivityRepository activityRepository, IMapper mapper, IFileUploadService uploadService, IClassGroupSubjectRepository classGroupSubjectRepository, IClassGroupSubjectActivityRepository classGroupSubjectActivityRepository)
+        private readonly IGradeService _gradeService;
+
+        public ActivityService(IActivityRepository activityRepository, IMapper mapper, IFileUploadService uploadService, IClassGroupSubjectRepository classGroupSubjectRepository, IClassGroupSubjectActivityRepository classGroupSubjectActivityRepository, IGradeService gradeService)
         {
             _activityRepository = activityRepository;
             _mapper = mapper;
             _uploadService = uploadService;
             _classGroupSubjectRepository = classGroupSubjectRepository;
             _classGroupSubjectActivityRepository=classGroupSubjectActivityRepository;
+            _gradeService = gradeService;
         }
 
         public async Task<ActivityDto> CreateActivityAsync(CreateActivityDto createActivityDto)
@@ -85,7 +88,39 @@ namespace Online_Learning_App.Application.Services
         }
 
 
-            public async Task<ActivityDto> GetActivityByIdAsync(Guid activityId)
+        public async Task<ActivityDto> UpdateTeacherActivityAsync(UpdateTeacherSubmissionDto createActivityDto)
+        {
+          
+            var classgroupsubjectid = Guid.NewGuid();
+            //var classGroupSubject = new ClassGroupSubject
+            //{
+            //    ClassGroupSubjectId = classgroupsubjectid,
+            //    ClassGroupId = createActivityDto.ClassGroupId.Value,
+            //    SubjectId = createActivityDto.SubjectId
+            //};
+
+            //await _classGroupSubjectRepository.AddAsync(classGroupSubject);
+
+            //var activity = _mapper.Map<Activity>(createActivityDto);
+            var activity = await _activityRepository.GetByIdAsync(createActivityDto.ActivityId);
+            var studentGuid = new Guid("845DB027-2D1D-46D5-5634-08DD65188216");
+            activity.Feedback = createActivityDto.Feedback;
+            activity.HasFeedback = true;
+            var activityGrade = new ActivityGradeDto
+            {
+                //ActivityGradeId = Guid.NewGuid(),
+                StudentId = studentGuid,
+                ActivityId = createActivityDto.ActivityId,
+                Score = createActivityDto.Grade.Value,
+            };
+           await _gradeService.AssignGradeToActivityTeacher(activityGrade);
+
+
+            await _activityRepository.UpdateAsync(activity);
+         //   await _classGroupSubjectActivityRepository.CreateAsync(classGroupSubjectActivity);
+            return _mapper.Map<ActivityDto>(activity);
+        }
+        public async Task<ActivityDto> GetActivityByIdAsync(Guid activityId)
         {
             var activity = await _activityRepository.GetByIdAsync(activityId);
             return activity == null ? null : _mapper.Map<ActivityDto>(activity);
