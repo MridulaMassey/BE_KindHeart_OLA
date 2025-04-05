@@ -23,8 +23,10 @@ using AutoMapper; // Add thi
 using System.Reflection;
 using Online_Learning_App.Infrastructure.Service; // Add this line
 using Online_Learning_App.Domain.Interfaces;
-using System.Text.Json.Serialization;
-using System.Text.Json;
+
+//using System.Text.Json.Serialization;
+//using System.Text.Json;
+using Newtonsoft.Json;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -61,6 +63,12 @@ var mapperConfig = new MapperConfiguration(cfg =>
 
 IMapper mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
+var settings = new JsonSerializerSettings
+{
+    PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+    Formatting = Formatting.Indented
+};
 
 builder.Services.AddCors(options =>
 {
@@ -69,11 +77,18 @@ builder.Services.AddCors(options =>
                           .AllowAnyMethod()
                           .AllowAnyHeader());
 });
-builder.Services.AddSingleton(new JsonSerializerOptions
+builder.Services.AddSingleton(new JsonSerializerSettings
 {
-    ReferenceHandler = ReferenceHandler.Preserve,
-    WriteIndented = true
+    //ReferenceHandler = ReferenceHandler.Preserve,
+    //WriteIndented = true
+     PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+    Formatting = Formatting.Indented
 });
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(options =>
+        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+
 
 builder.Services.AddControllers();
 // Register services

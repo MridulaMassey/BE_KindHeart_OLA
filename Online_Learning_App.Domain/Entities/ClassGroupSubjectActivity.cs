@@ -22,5 +22,10 @@ namespace Online_Learning_App.Domain.Entities
         [ForeignKey("Activity")]
         public Guid ActivityId { get; set; }
         public virtual Activity Activity { get; set; }
+        //[ForeignKey("Student")]
+        //public Guid? StudentId { get; set; }
+        //public virtual Student Student { get; set; }
+
+        
     }
 }

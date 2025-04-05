@@ -49,10 +49,10 @@ namespace Online_Learning_App.Application.Services
             {
                 throw new InvalidOperationException("Total weightage percent cannot exceed 100 percent.");
             }
-            var classgroupid = Guid.NewGuid();
+            var classgroupsubjectid = Guid.NewGuid();
             var classGroupSubject = new ClassGroupSubject
             {
-                ClassGroupSubjectId = classgroupid,
+                ClassGroupSubjectId = classgroupsubjectid,
                 ClassGroupId = createActivityDto.ClassGroupId.Value,
                 SubjectId = createActivityDto.SubjectId
             };
@@ -68,14 +68,14 @@ namespace Online_Learning_App.Application.Services
             activity.ClassGroupId = createActivityDto.ClassGroupId;
             activity.ClassLevel = "Four";
             activity.PdfUrl = response.ToString();
-            activity.ClassGroupSubjectId = classgroupid;
+            activity.ClassGroupSubjectId = classgroupsubjectid;
             var classgrpactivity = Guid.NewGuid();
             //await _classGroupSubjectRepository.AddAsync(classGroupSubject);
             activity.TeacherId = Guid.Parse("F7400196-CDEB-49ED-11BA-08DD64CD7D35");
             var classGroupSubjectActivity = new ClassGroupSubjectActivity
             {
                 ClassGroupSubjectActivityId= classgrpactivity,
-                ClassGroupSubjectId = classgroupid,
+                ClassGroupSubjectId = classgroupsubjectid,
              ActivityId= activity.ActivityId,
             };
           // await _classGroupSubjectActivityRepository.CreateAsync(classGroupSubjectActivity);

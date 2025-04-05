@@ -30,6 +30,8 @@ namespace Online_Learning_APP.Application.DTO
         public Boolean? HasFeedback { get; set; } = false;
         public string? Feedback { get; set; }
         public double WeightagePercent { get; set; } // Weightage per activity 90
-    
+
+        public string StudentPdfUrl { get; set; }
+        
     }
 }
