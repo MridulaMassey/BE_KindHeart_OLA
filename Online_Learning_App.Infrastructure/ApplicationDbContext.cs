@@ -149,6 +149,11 @@ namespace Online_Learning_App.Infrastructure
             modelBuilder.Entity<SubjectGrade>()
                 .Property(sg => sg.MaxMarks)
                 .HasColumnType("decimal(18,2)");
+            //modelBuilder.Entity<ClassGroupSubjectStudentActivity>()
+            //.HasOne(cgssa => cgssa.ClassGroup)
+            //.WithMany() // Assuming ClassGroup doesn't have a direct navigation property to this entity
+            //.HasForeignKey(cgssa => cgssa.ClassGroupId)
+            //.OnDelete(DeleteBehavior.NoAction); 
 
         }
 

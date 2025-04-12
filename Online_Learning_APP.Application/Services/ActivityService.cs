@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AutoMapper; // Assuming you're using AutoMapper
+using Microsoft.EntityFrameworkCore;
+
 //using Online_Learning_App.Application.DTOs;
 //using Online_Learning_App.Application.Interfaces;
 using Online_Learning_App.Domain.Entities;
 using Online_Learning_App.Domain.Interfaces;
+using Online_Learning_App.Infrastructure;
 using Online_Learning_App.Infrastructure.Migrations;
 using Online_Learning_App.Infrastructure.Repository;
 using Online_Learning_APP.Application.DTO;
@@ -21,17 +24,20 @@ namespace Online_Learning_App.Application.Services
         private IFileUploadService _uploadService;
         private readonly IClassGroupSubjectRepository _classGroupSubjectRepository;
         private readonly IClassGroupSubjectActivityRepository _classGroupSubjectActivityRepository;
-
+        private readonly IClassGroupSubjectStudentActivityRepository _classgroupsubjectstudentActivityrepository;
         private readonly IGradeService _gradeService;
-
-        public ActivityService(IActivityRepository activityRepository, IMapper mapper, IFileUploadService uploadService, IClassGroupSubjectRepository classGroupSubjectRepository, IClassGroupSubjectActivityRepository classGroupSubjectActivityRepository, IGradeService gradeService)
+        private readonly ApplicationDbContext _dbContext;
+        public ActivityService(IActivityRepository activityRepository, IMapper mapper, IFileUploadService uploadService, IClassGroupSubjectRepository classGroupSubjectRepository, IClassGroupSubjectActivityRepository classGroupSubjectActivityRepository, IGradeService gradeService,
+            ApplicationDbContext dbContext, IClassGroupSubjectStudentActivityRepository classgroupsubjectstudentActivityrepository)
         {
             _activityRepository = activityRepository;
             _mapper = mapper;
             _uploadService = uploadService;
             _classGroupSubjectRepository = classGroupSubjectRepository;
-            _classGroupSubjectActivityRepository=classGroupSubjectActivityRepository;
+            _classGroupSubjectActivityRepository = classGroupSubjectActivityRepository;
             _gradeService = gradeService;
+            _classgroupsubjectstudentActivityrepository = classgroupsubjectstudentActivityrepository;
+            _dbContext = dbContext;
         }
 
         public async Task<ActivityDto> CreateActivityAsync(CreateActivityDto createActivityDto)
@@ -46,8 +52,8 @@ namespace Online_Learning_App.Application.Services
             var existingActivities = await _activityRepository.GetBySubjectAndClassAsync(createActivityDto.SubjectId, createActivityDto.ClassGroupId.Value);
 
             // Calculate total weightage including the new activity
-            double totalWeightage = existingActivities.Sum(a => a.WeightagePercent) + createActivityDto.WeightagePercent;
-
+            //   double totalWeightage = existingActivities.Sum(a => a.WeightagePercent) + createActivityDto.WeightagePercent;
+            double totalWeightage = createActivityDto.WeightagePercent;
             if (totalWeightage > 100)
             {
                 throw new InvalidOperationException("Total weightage percent cannot exceed 100 percent.");
@@ -71,22 +77,73 @@ namespace Online_Learning_App.Application.Services
             activity.ClassGroupId = createActivityDto.ClassGroupId;
             activity.ClassLevel = "Four";
             activity.PdfUrl = response.ToString();
-            activity.WeightagePercent=createActivityDto.WeightagePercent;
+            activity.WeightagePercent = createActivityDto.WeightagePercent;
             activity.ClassGroupSubjectId = classgroupsubjectid;
             var classgrpactivity = Guid.NewGuid();
             //await _classGroupSubjectRepository.AddAsync(classGroupSubject);
             activity.TeacherId = Guid.Parse("F7400196-CDEB-49ED-11BA-08DD64CD7D35");
             var classGroupSubjectActivity = new ClassGroupSubjectActivity
             {
-                ClassGroupSubjectActivityId= classgrpactivity,
+                ClassGroupSubjectActivityId = classgrpactivity,
                 ClassGroupSubjectId = classgroupsubjectid,
-             ActivityId= activity.ActivityId,
+                ActivityId = activity.ActivityId,
             };
-          // await _classGroupSubjectActivityRepository.CreateAsync(classGroupSubjectActivity);
-              await _activityRepository.AddAsync(activity);
-           await _classGroupSubjectActivityRepository.CreateAsync(classGroupSubjectActivity);
+            //   var classGroups = _dbContext.Students.Where(a=>a.ClassGroupId== createActivityDto.ClassGroupId);
+            var allClassGroupIds = await _dbContext.Students.Where(a => a.ClassGroupId == createActivityDto.ClassGroupId)
+              .Select(s => s.ClassGroupId)
+         // .Distinct()
+            .ToListAsync();
+
+            // await _classGroupSubjectActivityRepository.CreateAsync(classGroupSubjectActivity);
+            await _activityRepository.AddAsync(activity);
+            await _classGroupSubjectActivityRepository.CreateAsync(classGroupSubjectActivity);
+
+
+            List<Guid?> targetClassGroupIds = new List<Guid?> { createActivityDto.ClassGroupId };
+            if (createActivityDto.ClassGroupId == null)
+            {
+                // Handle the case where ClassGroupId is not provided in DTO if needed
+                // For example, you might want to throw an error or process all groups.
+                // For this example, let's assume you process all if null.
+                targetClassGroupIds = allClassGroupIds;
+            }
+
+            foreach (var classGroupId in targetClassGroupIds.Where(id => id.HasValue).Select(id => id.Value).Distinct())
+            {
+                var studentsInClassGroup = await _dbContext.Students
+                    .Where(s => s.ClassGroupId == classGroupId)
+                    .ToListAsync();
+
+                foreach (var student in studentsInClassGroup)
+                {
+                    var classgrpactivityc = Guid.NewGuid(); // Generate a unique ID for each record
+
+                    var classGroupSubjectStudentActivityC = new ClassGroupSubjectStudentActivity
+                    {
+                        ClassGroupSubjectStudentActivityId = classgrpactivityc,
+                        ClassGroupSubjectId = classgroupsubjectid,
+                        ActivityId = activity.ActivityId, // Assuming 'activity' is defined elsewhere and has an ActivityId
+                        StudentId = student.Id // Use the actual StudentId from the student object
+                    };
+
+                    await _classgroupsubjectstudentActivityrepository.AddAsync(classGroupSubjectStudentActivityC);
+                }
+
+
+                //var classGroupSubjectStudentActivity = new ClassGroupSubjectStudentActivity
+                //{
+                //    ClassGroupSubjectStudentActivityId = classgrpactivity,
+                //    ClassGroupSubjectId = classgroupsubjectid,
+                //    ActivityId = activity.ActivityId,
+                //    StudentId = new Guid("845DB027-2D1D-46D5-5634-08DD65188216")
+                //    // StudentId =activity.StudentId.Value
+                //};
+                //await _classgroupsubjectstudentActivityrepository.AddAsync(classGroupSubjectStudentActivity);
+            
+            }
             return _mapper.Map<ActivityDto>(activity);
         }
+    
 
 
         public async Task<ActivityDto> UpdateTeacherActivityAsync(UpdateTeacherSubmissionDto createActivityDto)

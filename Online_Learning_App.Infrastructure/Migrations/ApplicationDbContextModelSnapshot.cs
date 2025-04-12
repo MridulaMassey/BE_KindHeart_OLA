@@ -228,7 +228,7 @@ namespace Online_Learning_App.Infrastructure.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("ActivityGrade");
+                    b.ToTable("ActivityGrade", (string)null);
                 });
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.Admin", b =>
@@ -255,7 +255,7 @@ namespace Online_Learning_App.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Admin");
+                    b.ToTable("Admin", (string)null);
                 });
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.ApplicationUser", b =>
@@ -378,7 +378,7 @@ namespace Online_Learning_App.Infrastructure.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("ClassGroupSubject");
+                    b.ToTable("ClassGroupSubject", (string)null);
                 });
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.ClassGroupSubjectActivity", b =>
@@ -399,7 +399,7 @@ namespace Online_Learning_App.Infrastructure.Migrations
 
                     b.HasIndex("ClassGroupSubjectId");
 
-                    b.ToTable("ClassGroupSubjectActivities");
+                    b.ToTable("ClassGroupSubjectActivities", (string)null);
                 });
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.ClassGroupSubjectGrade", b =>
@@ -422,7 +422,7 @@ namespace Online_Learning_App.Infrastructure.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("ClassGroupSubjectGrade");
+                    b.ToTable("ClassGroupSubjectGrade", (string)null);
                 });
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.ClassGroupSubjectStudentActivity", b =>
@@ -448,7 +448,7 @@ namespace Online_Learning_App.Infrastructure.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("ClassGroupSubjectStudentActivity");
+                    b.ToTable("ClassGroupSubjectStudentActivity", (string)null);
                 });
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.FinalGrade", b =>
@@ -479,7 +479,7 @@ namespace Online_Learning_App.Infrastructure.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("FinalGrade");
+                    b.ToTable("FinalGrade", (string)null);
                 });
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.Grade", b =>
@@ -505,7 +505,7 @@ namespace Online_Learning_App.Infrastructure.Migrations
 
                     b.HasKey("GradeId");
 
-                    b.ToTable("Grade");
+                    b.ToTable("Grade", (string)null);
                 });
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.Role", b =>
@@ -585,7 +585,7 @@ namespace Online_Learning_App.Infrastructure.Migrations
 
                     b.HasKey("SubjectId");
 
-                    b.ToTable("Subjects");
+                    b.ToTable("Subjects", (string)null);
                 });
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.SubjectGrade", b =>
@@ -612,7 +612,7 @@ namespace Online_Learning_App.Infrastructure.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("SubjectGrade");
+                    b.ToTable("SubjectGrade", (string)null);
                 });
 
             modelBuilder.Entity("Online_Learning_App.Domain.Entities.Submission", b =>
