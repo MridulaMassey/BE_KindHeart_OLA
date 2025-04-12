@@ -33,12 +33,12 @@ namespace Online_Learning_APP.Application.Services
             // return _mapper.Map<SubjectDto>(subject);
             return subject.ClassGroupSubjectStudentActivityId;
         }
-        public async Task<ClassGroupSubjectStudentActivityDto> GetSubjectByIdAsync(Guid subjectId)
+        public async Task<IEnumerable<ClassGroupSubjectStudentActivityDto>> GetSubjectByIdAsync(Guid subjectId)
         {
             var subject = await _repository.GetClassGroupSubjectActivityByIdAsync(subjectId);
             if (subject == null)
                 return null;
-            return subject == null ? null : _mapper.Map<ClassGroupSubjectStudentActivityDto>(subject);
+            return subject == null ? null : _mapper.Map<IEnumerable<ClassGroupSubjectStudentActivityDto>>(subject); 
 
         }
         public async Task<IEnumerable<ClassGroupSubjectStudentActivityDto>> GetAllSubjectsAsync()
@@ -56,10 +56,10 @@ namespace Online_Learning_APP.Application.Services
             }
 
             // Update properties
-            subject.ClassGroupSubjectStudentActivityId = updateSubjectDto.ActivityId;
+         //   subject.ClassGroupSubjectStudentActivityId = updateSubjectDto.ActivityId;
             //activity.Description = updateSubjectDto.Description ?? activity.Description;
 
-            await _repository.UpdateAsync(subject);
+       //     await _repository.UpdateAsync(subject);
             return _mapper.Map<ClassGroupSubjectStudentActivityDto>(subject);
         }
 

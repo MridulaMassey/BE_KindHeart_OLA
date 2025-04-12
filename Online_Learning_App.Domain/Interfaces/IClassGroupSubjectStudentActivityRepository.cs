@@ -12,7 +12,7 @@ namespace Online_Learning_App.Domain.Interfaces
         Task AddAsync(ClassGroupSubjectStudentActivity classgroupSubjectStudentActivity);
         Task<IEnumerable<ClassGroupSubjectStudentActivity>> GetAllAsync();
         Task UpdateAsync(ClassGroupSubjectStudentActivity classgroupSubjectStudentActivity);
-        Task<ClassGroupSubjectStudentActivity> GetClassGroupSubjectActivityByIdAsync(Guid id);
+        Task<IEnumerable<ClassGroupSubjectStudentActivity>> GetClassGroupSubjectActivityByIdAsync(Guid id);
         Task<bool> DeleteAsync(Guid id);
     }
 }
