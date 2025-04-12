@@ -108,6 +108,8 @@ builder.Services.AddScoped<IClassGroupService, ClassGroupService>();
 builder.Services.AddScoped<IClassGroupSubjectService, ClassGroupSubjectService>();
 builder.Services.AddScoped<IClassGroupSubjectRepository, ClassGroupSubjectRepository>();
 builder.Services.AddScoped<IClassGroupSubjectActivityRepository, ClassGroupSubjectActivityRepository>();
+builder.Services.AddScoped<IClassGroupSubjectStudentActivityRepository, ClassGroupSubjectStudentActivityRepository>();
+builder.Services.AddScoped<IClassGroupSubjectStudentActivityService, ClassGroupSubjectStudentActivityService>();
 builder.Services.AddScoped<IClassGroupSubjectActivityService, ClassGroupSubjectActivityService>();
 builder.Services.AddHttpContextAccessor();
 

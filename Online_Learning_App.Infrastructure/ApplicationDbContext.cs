@@ -10,6 +10,9 @@ namespace Online_Learning_App.Infrastructure
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
          public DbSet<ClassGroupSubjectActivity> ClassGroupSubjectActivities { get; set; }
+
+        public DbSet<ClassGroupSubjectStudentActivity> ClassGroupSubjectStudentActivity { get; set; }
+        
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Activity> Activities { get; set; }

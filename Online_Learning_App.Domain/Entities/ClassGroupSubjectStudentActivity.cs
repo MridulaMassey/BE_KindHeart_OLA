@@ -11,7 +11,7 @@ namespace Online_Learning_App.Domain.Entities
    public class ClassGroupSubjectStudentActivity
     {
         [Key]
-        public Guid ClassGroupSubjectActivityId { get; set; }
+        public Guid ClassGroupSubjectStudentActivityId { get; set; }
 
 
         [ForeignKey("ClassGroupSubject")]
