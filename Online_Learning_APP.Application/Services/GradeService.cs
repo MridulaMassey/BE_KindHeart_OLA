@@ -7,6 +7,7 @@ using Online_Learning_APP.Application.DTO;
 using Online_Learning_APP.Application.Interfaces;
 using Online_Learning_App.Domain.Entities;
 using Online_Learning_App.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace Online_Learning_APP.Application.Services
 {
@@ -41,8 +42,13 @@ namespace Online_Learning_APP.Application.Services
                 ActivityId = activityGradeDto.ActivityId,
                 Score = activityGradeDto.Score
             };
-
-            await _context.ActivityGrade.AddAsync(activityGrade);
+            var activityId = _context.ActivityGrade.FirstOrDefault(a => a.ActivityId == activityGrade.ActivityId);
+            if (activityId == null)
+            {
+              
+                await _context.ActivityGrade.AddAsync(activityGrade);
+            }
+           
             await _context.SaveChangesAsync();
         }
 

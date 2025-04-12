@@ -71,6 +71,7 @@ namespace Online_Learning_App.Application.Services
             activity.ClassGroupId = createActivityDto.ClassGroupId;
             activity.ClassLevel = "Four";
             activity.PdfUrl = response.ToString();
+            activity.WeightagePercent=createActivityDto.WeightagePercent;
             activity.ClassGroupSubjectId = classgroupsubjectid;
             var classgrpactivity = Guid.NewGuid();
             //await _classGroupSubjectRepository.AddAsync(classGroupSubject);
@@ -92,30 +93,39 @@ namespace Online_Learning_App.Application.Services
         {
           
             var classgroupsubjectid = Guid.NewGuid();
-            //var classGroupSubject = new ClassGroupSubject
-            //{
-            //    ClassGroupSubjectId = classgroupsubjectid,
-            //    ClassGroupId = createActivityDto.ClassGroupId.Value,
-            //    SubjectId = createActivityDto.SubjectId
-            //};
-
-            //await _classGroupSubjectRepository.AddAsync(classGroupSubject);
-
-            //var activity = _mapper.Map<Activity>(createActivityDto);
+           
             var activity = await _activityRepository.GetByIdAsync(createActivityDto.ActivityId);
             var studentGuid = new Guid("845DB027-2D1D-46D5-5634-08DD65188216");
             activity.Feedback = createActivityDto.Feedback;
             activity.HasFeedback = true;
-            var activityGrade = new ActivityGradeDto
+           
+
+           var activityGrade = new ActivityGradeDto
             {
                 //ActivityGradeId = Guid.NewGuid(),
                 StudentId = studentGuid,
                 ActivityId = createActivityDto.ActivityId,
                 Score = createActivityDto.Grade.Value,
             };
-           await _gradeService.AssignGradeToActivityTeacher(activityGrade);
+            var finalGrade = new FinalGradeDto
+            {
+                //ActivityGradeId = Guid.NewGuid(),
+                StudentId = studentGuid,
+              SubjectId = activity.SubjectId
+            };
+            //  var activitygradeId=_gradeService.get
+            await _gradeService.AssignGradeToActivityTeacher(activityGrade);
+            //var activityGradeObject= new ActivityGradeDto
+            //{
 
+            //    StudentId = activityGrade.StudentId,
+            //    ActivityId = createActivityDto.ActivityId,
+            //    Score = createActivityDto.Grade.Value
+            //};
 
+            var activityFeedback = await _gradeService.CalculateFinalGrade(finalGrade);
+          
+            //await _gradeService.AssignGradeToActivity(activityGradeObject);
             await _activityRepository.UpdateAsync(activity);
          //   await _classGroupSubjectActivityRepository.CreateAsync(classGroupSubjectActivity);
             return _mapper.Map<ActivityDto>(activity);
