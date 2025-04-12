@@ -15,6 +15,14 @@ namespace Online_Learning_APP.Application.DTO
         public Guid ActivityId { get; set; }
 
         public Guid StudentId { get; set; }
-  
+        public string StudentUsername { get; set; }
+
+        public string ActivityActivityName { get; set; }
+
+        public string ClassGroupSubjectClassGroupClassName { get; set; }
+          
+
+
+
     }
 }

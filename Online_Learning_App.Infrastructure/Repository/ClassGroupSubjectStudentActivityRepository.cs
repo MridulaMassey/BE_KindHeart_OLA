@@ -27,7 +27,7 @@ namespace Online_Learning_App.Infrastructure.Repository
         }
         public async Task<IEnumerable<ClassGroupSubjectStudentActivity>> GetAllAsync()
         {
-            return await _dbContext.ClassGroupSubjectStudentActivity.ToListAsync();
+            return await _dbContext.ClassGroupSubjectStudentActivity.Include(a=>a.Student).Include(a=> a.Activity).Include(a => a.ClassGroupSubject).ThenInclude(a=> a.ClassGroup).ToListAsync();
         }
         public async Task UpdateAsync(ClassGroupSubjectStudentActivity classgroupSubjectStudentActivity)
         {
